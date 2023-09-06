@@ -1,5 +1,31 @@
-<p>login works!</p>
+<div *ngIf="showLogInToAccessMessage" class="outline bg-red-500 h-12 w-3/4 m-auto text-center py-2"> 
+    Please Log in To access that Page
+</div>
 
+<div *ngIf="showErrorMessage" class="outline bg-red-500 h-12 w-3/4 m-auto text-center py-2"> 
+    {{errorMessage}}
+</div>
 
+<form #form="ngForm" (ngSubmit)="onSubmit(form.value)">
+    <div>
+        <label for="email">Email: </label>
+        <input type="text" name="email" ngModel>
+    </div>    
+    <div>
+        <label for="email">Password: </label>
+        <input type="text" name="password" ngModel>
+    </div>
+
+    <button type="submit" >Login</button>
+
+</form>
+
+<div>
+    <p> Forgot password? </p>    
+</div>
+
+<div>
+    <button>Sign in with google instead</button>
+</div>
 
 

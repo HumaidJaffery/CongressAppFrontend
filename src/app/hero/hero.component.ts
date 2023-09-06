@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-hero',
@@ -7,9 +8,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HeroComponent implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router ) { }
 
   ngOnInit(): void {
+  }
+
+  redirectSignup(){
+    this.router.navigate(['signup']);
+  }
+
+  redirectLogin(){
+    this.router.navigate(['login']);
   }
 
 }
