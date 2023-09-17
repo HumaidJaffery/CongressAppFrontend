@@ -1,0 +1,55 @@
+<div [style.background-color]="backgroundColor" [style.color]="textColor">
+<form #ngForm="ngForm" (submit)="onSubmit(ngForm)">
+    <div>
+        <label>Title:</label>
+        <input type="text" name="title" ngModel> 
+    </div> 
+    <div>
+        <label>description:</label>
+        <input type="text" name="description" ngModel> 
+    </div> 
+
+    <!-- isPublic Two buttons-->
+    <div>
+        
+        <p-selectButton name="isPublic" [options]="publicOrPrivate" [(ngModel)]="isPublic" ></p-selectButton>
+    </div>
+
+    <!-- slider -->
+    <div>
+        <label>Questions required per user</label>
+        <input name="questionsPerUser" type="range" min="1" max="10"  [(ngModel)]="questionsPerUserValue" > 
+        <p >{{questionsPerUserValue}}</p>
+    </div>
+
+    <!-- color wheels-->
+    <div>
+        <label>Background Color:</label>
+        <p-colorPicker [(ngModel)]="backgroundColor" [inline]="true" name="backgroundColor"></p-colorPicker>
+    </div>
+
+    <div>
+        <label>Text Color:</label>
+        <p-colorPicker [(ngModel)]="textColor" [inline]="true" name="textColor"></p-colorPicker>
+    </div>
+
+    <!-- Checkbox -->
+    <div>
+        <br><label>Question Types:</label><br>
+
+        
+        
+        <div *ngFor="let questionType of questionTypes" class="field-checkbox" class="my-3 mx-1">
+            <p-checkbox name="questionType"  [(ngModel)]="selectedQuestionTypes" [value]="questionType.value" [inputId]="questionType.name"></p-checkbox>
+            <label class="mx-1" [for]="questionType">{{ questionType.name }}</label>
+        </div>
+            
+    </div>
+
+    <app-add-topic (sendTopicList)="recieveTopicList($event)"> </app-add-topic>
+    
+
+
+    <button type="submit"> Submit </button>    
+</form>
+</div>

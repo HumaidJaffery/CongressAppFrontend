@@ -21,9 +21,11 @@ export class SignupComponent implements OnInit {
   onSubmit(data: any){
     this.authService.signup(data.email, data.username, data.password).subscribe(
       (response: any) => {
+        console.log(response);
         this.router.navigate(['home']);
       },
       (error: any) => {
+        //to do: implement error
         console.log(error);
       }
     )

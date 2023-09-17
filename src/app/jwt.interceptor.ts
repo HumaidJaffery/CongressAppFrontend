@@ -3,9 +3,10 @@ import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HTTP_INTERCEPTORS
 import { Observable } from 'rxjs';
 
 @Injectable()
-export class HttpRequestInterceptor implements HttpInterceptor {
+export class JwtInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const token = localStorage.getItem('jwt_token');
+    // console.log("JWT INTECEPTOR: " + token);
 
     if(token){
       request = request.clone({
@@ -14,7 +15,7 @@ export class HttpRequestInterceptor implements HttpInterceptor {
         }
       })
     }
-
+    
     return next.handle(request);
   }
 }

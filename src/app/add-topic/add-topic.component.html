@@ -1,0 +1,18 @@
+
+
+<div class="outline p-4">
+    <form (submit)="addTopic()">
+        <label for="name">Name: </label>
+        <input ngModel #name name="name" type="text" maxlength="35" [(ngModel)]="topicName">
+        <button type="submit" class="outline px-3 m-2"> Add </button>
+    </form>
+    
+
+    <div>
+        <ul>
+            <li *ngFor="let topic of topicList">
+            {{ topic }}
+            </li>
+        </ul>
+    </div>
+</div>
