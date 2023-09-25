@@ -22,13 +22,18 @@ export class RoomComponent implements OnInit {
       this.roomService.getRoom(this.roomKey).subscribe(
         (response: any) => {
           this.roomInfo = response;
-          console.log(this.roomInfo);
           this.roomDoesntExist = false;
       }, (error: any) => {
           console.log(error);
       }
       )
     })
+  }
+
+  goToQuiz(){
+    const roomInfoSerialized = encodeURIComponent(JSON.stringify(this.roomInfo)); 
+    console.log(this.roomInfo.questionsRequiredPerUser);
+    this.router.navigate([`/room/${this.roomInfo.key}/questions/0`], {queryParams: {roomInfo: roomInfoSerialized}});
   }
   
 }

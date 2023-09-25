@@ -16,9 +16,9 @@
     <div>
         <h1>Topics: </h1>
         <div *ngFor="let topic of roomInfo.topics">
-            <h1>{{topic.name}}: {{topic.questions.length}} Questions</h1>
+            <h1>{{topic.name}}</h1>
         </div>
     </div>
 
-    <button class="my-4 outline px-5 py-3"> Start Quiz </button>
+    <button class="my-4 outline px-5 py-3" (click)="goToQuiz()"> Start Quiz </button>
 </div>

@@ -37,8 +37,6 @@
     <div>
         <br><label>Question Types:</label><br>
 
-        
-        
         <div *ngFor="let questionType of questionTypes" class="field-checkbox" class="my-3 mx-1">
             <p-checkbox name="questionType"  [(ngModel)]="selectedQuestionTypes" [value]="questionType.value" [inputId]="questionType.name"></p-checkbox>
             <label class="mx-1" [for]="questionType">{{ questionType.name }}</label>

@@ -1,0 +1,14 @@
+<form #ngForm="ngForm" (submit)="onSubmit(ngForm)">
+
+    <div >
+
+        <h1 class="text-4xl">{{questions.indexOf(false)+1}}</h1>
+
+        <app-add-question *ngFor="let q of questions; let i = index" #question [questionTypesAllowed]="roomInfo.allowedQuestionTypes" [roomKey]="roomInfo.key" 
+        [topics]="sendTopics()"  [questionNumber]="i" (nextQuestion)="nextQuestion($event)" [questionsRequiredPerUser]="roomInfo.questionsRequiredPerUser"> 
+        </app-add-question>
+    </div>
+
+    <button class="outline outline-green-600 p-2 my-3" type="submit">Submit </button>
+</form>
+

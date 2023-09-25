@@ -20,7 +20,8 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { RoomComponent } from './room/room.component';
 import { JwtInterceptor } from './jwt.interceptor';
 import { AddQuestionComponent } from './add-question/add-question.component';
-import { JoinRoomComponent } from './join-room/join-room.component';
+import { AddQuestionPageComponent } from './add-question-page/add-question-page.component';
+import { ListboxModule } from 'primeng/listbox';
 
 
 
@@ -35,9 +36,8 @@ import { JoinRoomComponent } from './join-room/join-room.component';
     AddTopicComponent,
     RoomComponent,
     AddQuestionComponent,
-    JoinRoomComponent,
-
-    
+    AddQuestionPageComponent,
+  
   ],
   imports: [
     BrowserModule,
@@ -49,7 +49,9 @@ import { JoinRoomComponent } from './join-room/join-room.component';
     ColorPickerModule,
     BrowserAnimationsModule,
     SelectButtonModule,
-    CheckboxModule
+    CheckboxModule,
+    ListboxModule
+    
   ],
   providers: [
     {

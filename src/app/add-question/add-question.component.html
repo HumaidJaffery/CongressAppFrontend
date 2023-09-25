@@ -1,1 +1,68 @@
-<p>add-question works!</p>
+
+<div>
+    <div class="w-40 ">
+        <p-listbox [options]="questionTypesAllowed" [(ngModel)]="questionType" class="text-xs"> </p-listbox>
+    </div>
+
+    <h1>{{questionNumber+1}}</h1>
+
+    <div>
+        <div class="outline p-10 w-3/4">
+            <div [hidden]="questionType != 'MULTIPLECHOICE' " >
+                <div *ngIf="cantRemoveChoiceMsg">
+                    <h1 class="text-lg text-red-500">Multiple Choice questions must have atleast two choices</h1>
+                </div>
+
+                <div class="m-1 my-2" >
+                    <label for="question">Question: </label>
+                    <input class="outline" type="text" name="question" [(ngModel)]="question">
+                </div>
+
+                <div #choicesDiv> 
+                    
+                </div>
+
+                <button (click)="addChoice()" type="button"> Add Choice </button>
+            </div>
+
+            <div *ngIf="questionType == 'FREERESPONSE' ">
+                <div class="m-1 my-2">
+                    <label for="question">Question: </label>
+                    <input class="outline" type="text" name="question" [(ngModel)]="question">
+                </div>
+
+                <div>
+                    <label for="question">Answer: </label>
+                    <input class="outline" type="text" name="answer" [(ngModel)]="freeResponseAnswer">
+                </div>
+            </div>
+
+            <div *ngIf="questionType == 'TRUEFALSE' ">
+                
+                <div class="m-1 my-2">
+                    <label for="question">Question: </label>
+                    <input class="outline" type="text" name="question" [(ngModel)]="question">
+                </div>
+                
+                <div>
+                    <button type="button" (click)="isTrue = true" class="outline p-2 mx-3" [style.color]="isTrue?'blue' : 'black'" [style.background-color]="isTrue ? 'lightblue' : 'white' ">  True </button>
+                    <button type="button" (click)="isTrue = false" class="outline p-2 mx-3" [style.color]="isTrue?'black' : 'blue' " [style.background-color]="isTrue ? 'white' : 'lightblue' "> False </button>
+                </div>
+            </div>
+
+            <div id="explanation" class="my-5">
+                <label for="explanation">Explanation: </label>
+                <input type="text" name="explanation" [(ngModel)]="explanation" class="outline p-4 w-3/4 h-52">         
+            </div>
+
+            <div id="topics">
+                <!-- <button type="button" *ngFor="let topic of topics" class="outline px-6 py-1 mx-1">{{topic.name}}</button> -->
+                
+                <p-selectButton name="topics" [options]="topics" [(ngModel)]="selectedTopics" [multiple]="true" optionLabel="name" optionValue="id"></p-selectButton>
+            </div>
+        </div>
+
+        <button type="submit" (click)="addQuestion()" type="button"> Next </button>
+    </div>
+</div>
+

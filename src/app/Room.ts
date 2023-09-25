@@ -1,7 +1,7 @@
 export interface Room{
     title: String,
     description: String,
-    isPublic: boolean,
+    public: boolean,
     
     questionsRequiredPerUser: number,
     bgColor: String,

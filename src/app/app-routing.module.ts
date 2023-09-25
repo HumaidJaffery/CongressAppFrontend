@@ -7,6 +7,7 @@ import { SignupComponent } from './signup/signup.component';
 import { AuthGuard } from './authGuard';
 import { CreateRoomComponent } from './create-room/create-room.component';
 import { RoomComponent } from './room/room.component';
+import { AddQuestionPageComponent } from './add-question-page/add-question-page.component';
 
 const routes: Routes = [
   {path: '', component: HeroComponent},
@@ -15,6 +16,8 @@ const routes: Routes = [
   {path: 'home', component: HomeComponent, canActivate: [AuthGuard]},
   {path: 'create-room', component: CreateRoomComponent, canActivate: [AuthGuard]},
   {path: 'room/:key', component: RoomComponent, canActivate: [AuthGuard]},
+  {path: 'room/:key/questions', component: AddQuestionPageComponent, canActivate: [AuthGuard]},
+  {path: 'room/:key/questions/:number', component: AddQuestionPageComponent, canActivate: [AuthGuard]},
   {path: '**', component: HeroComponent},
   
 

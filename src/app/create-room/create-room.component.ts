@@ -3,6 +3,7 @@ import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
 import { RoomService } from '../room.service';
 import { Room } from '../Room';
+import { QuestionType } from '../QuestionType';
 
 @Component({
   selector: 'app-create-room',
@@ -16,14 +17,12 @@ export class CreateRoomComponent implements OnInit {
   isPublic = false;
   showAddTopic = false;
   topicList: any[] = [];
-  selectedQuestionTypes: any[] = ["MULTIPLECHOICE"];
+  selectedQuestionTypes: any[] = [QuestionType.MultipleChoice];
 
   questionTypes: any[] = [
-    {name: "Multiple Choice", value: "MULTIPLECHOICE"},
-    {name: "Free Response", value: "FREERESPONSE"},
-    {name: "True False", value: "TRUEFALSE"},
-    {name: "Multiple Select", value: "MULTIPLESELECT"},
-
+    {name: "Multiple Choice", value: QuestionType.MultipleChoice},
+    {name: "Free Response", value: QuestionType.FreeResponse},
+    {name: "True False", value: QuestionType.TrueFalse},
   ];
   
   publicOrPrivate: any[] = [
@@ -43,7 +42,7 @@ export class CreateRoomComponent implements OnInit {
     var room: Room = {
       title: roomData.title,
       description: roomData.description,
-      isPublic: roomData.isPublic,
+      public: roomData.isPublic,
       questionsRequiredPerUser: roomData.questionsPerUser,
       bgColor: roomData.backgroundColor,
       textColor: roomData.textColor,

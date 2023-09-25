@@ -3,7 +3,12 @@
 </button>
 
 <div>
-    <div>
-        
+    <div class="outline p-4 mx-4 my-4 text-left" *ngFor="let room of publicRooms" [style.background-color]="room.bgColor" [style.color]="room.color">
+        <p class="text-xs">Made By <b>{{room.owner.username}}</b></p>
+        <h1 class="text-3xl">{{room.title}}</h1>
+        <h1 class="text-lg">{{room.description}}</h1>
+        <p> </p>
+
+        <button class="my-2 outline p-1 bg-teal-500" (click)="this.router.navigate(['room/' + room.key])"> Join Room </button>
     </div>
 </div>
