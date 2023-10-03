@@ -5,20 +5,33 @@
     <button (click)="this.router.navigate(['home'])"> Go home </button>
 </div>
 
-<div *ngIf="!roomDoesntExist" [style.background-color]="roomInfo.bgColor" class="text-center">
-    <h1 class="text-4xl" [style.color]="roomInfo.textColor"> {{roomInfo.title }} </h1>
-    <p [style.color]="roomInfo.textColor" cla>{{roomInfo.description}}</p>
-    <h1>Room Key: {{roomKey}}</h1>
-    <h1>{{roomInfo.questions.length}} Questions</h1>
-    <h1>Required Questions per user: {{roomInfo.questionsRequiredPerUser}}</h1>
-    <h1> Made by {{roomInfo.owner.username}}</h1>
+<div *ngIf="userStatus == 'BANNED'">
+    <h1> You are banned from this Room"</h1>
+    <button (click)="this.router.navigate(['home'])"> Go home </button>
+</div>
 
+<div *ngIf="!roomDoesntExist && userStatus != 'BANNED'" [style.background-color]="roomInfo.bgColor" class="text-center">
     <div>
-        <h1>Topics: </h1>
-        <div *ngFor="let topic of roomInfo.topics">
-            <h1>{{topic.name}}</h1>
+        <h1 class="text-4xl" [style.color]="roomInfo.textColor"> {{roomInfo.title }} </h1>
+        <p [style.color]="roomInfo.textColor" cla>{{roomInfo.description}}</p>
+        <h1>Room Key: {{roomKey}}</h1>
+        <h1>Required Questions per user: {{roomInfo.questionsRequiredPerUser}}</h1>
+        <h1> Made by {{roomInfo.owner.username}}</h1>
+
+        <div>
+            <h1>Topics: </h1>
+            <div *ngFor="let topic of roomInfo.topics">
+                <h1>{{topic.name}}</h1>
+            </div>
         </div>
     </div>
 
-    <button class="my-4 outline px-5 py-3" (click)="goToQuiz()"> Start Quiz </button>
+    <div *ngIf="userStatus == 'NONE'">
+        <div>
+            Questions needed to access Quiz: 
+            <button class="my-4 outline px-5 py-3" (click)="joinRoom()"> Start Quiz </button>
+        </div>
+    </div>  
+    
+    <button class="my-4 outline px-5 py-3" (click)="joinRoom()"> Start Quiz </button>
 </div>

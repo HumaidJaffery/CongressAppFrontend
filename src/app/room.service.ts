@@ -22,4 +22,8 @@ export class RoomService {
   public getPublicRooms(page: number): Observable<any> {
     return this.http.get(`${environment.apiServerUrl}/room/getPublic/${page}`);
   }
+
+  public getUserStatus(roomKey: number): Observable<any> {
+    return this.http.get(`${environment.apiServerUrl}/user-room/getUserStatus/${roomKey}`);
+  }
 }

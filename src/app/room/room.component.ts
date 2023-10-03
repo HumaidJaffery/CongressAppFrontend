@@ -13,16 +13,31 @@ export class RoomComponent implements OnInit {
   roomKey: any = "";
   roomDoesntExist = true;
   roomInfo: any = {};
+  userStatus: any;
   
   constructor(private route: ActivatedRoute, private roomService: RoomService, public router: Router ) {}
   
   ngOnInit(): void {
+    //getting room Info based on key
     this.route.paramMap.subscribe(params => {
       this.roomKey = params.get('key');
       this.roomService.getRoom(this.roomKey).subscribe(
         (response: any) => {
+          console.log(response);
           this.roomInfo = response;
           this.roomDoesntExist = false;
+
+          //getting userStatus
+          this.roomService.getUserStatus(this.roomKey).subscribe(
+            (response: any) =>{
+              console.log('here');
+              this.userStatus = response;
+              console.log(response)
+            }, (error: any) => {
+              console.log(error);
+            }
+          )
+
       }, (error: any) => {
           console.log(error);
       }
@@ -30,7 +45,7 @@ export class RoomComponent implements OnInit {
     })
   }
 
-  goToQuiz(){
+  joinRoom(){
     const roomInfoSerialized = encodeURIComponent(JSON.stringify(this.roomInfo)); 
     console.log(this.roomInfo.questionsRequiredPerUser);
     this.router.navigate([`/room/${this.roomInfo.key}/questions/0`], {queryParams: {roomInfo: roomInfoSerialized}});
