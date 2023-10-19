@@ -1,0 +1,11 @@
+
+<label for="key">Please enter 6 digit Room key: </label>
+<!--Fix this later-->
+<input name="key" [(ngModel)]="roomKey" type="number" class="p-8 outline bg-slate-300" maxlength="999999"> 
+<button (click)="submit()" class="m-5 p-3 outline"> Join Room</button>
+
+<div *ngIf="showErrorMsg">
+    <h1 class="text-xl text-red-500">Please enter exactly six digits</h1>
+</div>
+
+

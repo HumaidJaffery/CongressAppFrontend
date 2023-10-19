@@ -3,7 +3,7 @@ export interface Question{
     roomKey: number,
     question: string,
     answers: string[],
-    correctAnswer: string[],
+    correctAnswer: string,
     explanation: string,
     topicIds: number[]
 }

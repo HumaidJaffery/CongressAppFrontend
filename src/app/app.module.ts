@@ -22,6 +22,13 @@ import { JwtInterceptor } from './jwt.interceptor';
 import { AddQuestionComponent } from './add-question/add-question.component';
 import { AddQuestionPageComponent } from './add-question-page/add-question-page.component';
 import { ListboxModule } from 'primeng/listbox';
+import { QuizComponent } from './quiz/quiz.component';
+import { RouterModule } from '@angular/router';
+import { GradeComponent } from './grade/grade.component';
+import { StatisticsComponent } from './statistics/statistics.component';
+import { UserStatisticsComponent } from './user-statistics/user-statistics.component';
+import { JoinRoomComponent } from './join-room/join-room.component';
+import { ProfileComponent } from './profile/profile.component';
 
 
 
@@ -37,6 +44,12 @@ import { ListboxModule } from 'primeng/listbox';
     RoomComponent,
     AddQuestionComponent,
     AddQuestionPageComponent,
+    QuizComponent,
+    GradeComponent,
+    StatisticsComponent,
+    UserStatisticsComponent,
+    JoinRoomComponent,
+    ProfileComponent,
   
   ],
   imports: [
@@ -51,7 +64,6 @@ import { ListboxModule } from 'primeng/listbox';
     SelectButtonModule,
     CheckboxModule,
     ListboxModule
-    
   ],
   providers: [
     {

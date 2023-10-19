@@ -1,0 +1,57 @@
+<div *ngIf="totalNumberOfQuestions == 0">
+    <h1>There are no questions in this quiz yet.</h1>
+</div>
+
+
+<div *ngIf="userStatus == 'BANNED'"> 
+    <h1>You are banned from this room</h1>
+    <button (click)="this.router.navigate(['/home'])"> Go Home </button>
+</div>
+
+<div *ngIf="userStatus == 'ROOMJOINED'"> 
+    <h1>You can not take the quiz yet, you still have to submit questions to be able to access the quiz</h1>
+    <button (click)="this.router.navigate(['/room/' + this.roomKey])"> Go Back to Room Page </button>
+</div>
+
+<div *ngIf="userStatus == 'CANTAKEQUIZ' || userStatus == 'QUIZTAKEN' || userStatus == 'OWNER'"> 
+    <div [hidden]="numberOfQuestionsSliderHidden">
+        <h1>How many Questions? </h1>
+        <input name="questionsPerUser" type="range" min="1" [max]="totalNumberOfQuestions"  [(ngModel)]="numOfQuestions" > 
+        <p >{{numOfQuestions}}</p>
+        <button class="outline px-4 m-3" (click)="getQuestions()"> GO </button>        
+    </div>  
+
+    <div [hidden]="!numberOfQuestionsSliderHidden">
+        <div *ngFor="let question of questions; let i=index" class="outline m-10" [style.outline]="(this.missingAnswers.includes(i)) ? '3px solid red': '3px solid black'">
+            <h1 class="outline p-1 w-4">{{i+1}}</h1>
+            <h1>{{question.question}}</h1>
+
+            <div *ngIf="question.questionType == 'TRUEFALSE'" >
+                <button class="outline px-4 py-2 m-2" (click)="selectAnswer(i, 'TRUEFALSE', 'true')"
+                [style.background-color]="('true' == answers[i]) ? 'green' : 'white'">True</button>
+                <button class="outline px-4 py-2 m-2" (click)="selectAnswer(i, 'TRUEFALSE', 'false')"
+                [style.background-color]="('false' == answers[i]) ? 'green' : 'white'">False</button>
+            </div>
+
+            <div *ngIf="question.questionType == 'FREERESPONSE'">
+                <input type="text" [(ngModel)]="answers[i]">
+            </div>
+
+            <div *ngIf="question.questionType == 'MULTIPLECHOICE'">
+                <div *ngFor="let answer of question.answers" (click)="selectAnswer(i, 'MULTIPLECHOICE', answer)" 
+                [style.background-color]="(answer == answers[i]) ? 'green' : 'white'">
+                    <h1>{{answer}}</h1>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="missingAnswersError">
+            <h1>Answer <b>All Questions</b> Before submitting</h1>
+            <p *ngFor="let m of missingAnswers"> {{(m+1)}} </p>
+        </div>
+
+
+        <button type="button" (click)="submit()"> Submit </button>
+    </div>
+
+</div>

@@ -1,0 +1,53 @@
+<h1 class="text-4xl text-center m-2">{{this.roomName}}</h1>
+
+
+<div>
+    <h1 class="text-2xl">Average Grade: <b> {{averageGrade}}%</b></h1>
+    <p>The number of Users: <b>{{userRoomRelations?.length - 1}} </b></p>
+    <p>The number of Questions: <b>{{questions?.length}} </b></p>
+    <button class="mx-5 my-1 p-2 outline" (click)="viewingMode = 'USER'"> User </button>
+    <button class="mx-5 my-1 p-2 outline" (click)="viewingMode = 'QUESTION'"> Question </button>
+</div>
+
+
+
+<!-- Users-->
+<div *ngIf="viewingMode == 'USER'">
+    <h1>Users: </h1>
+    <div *ngFor="let relation of userRoomRelations">
+        <li>{{relation.user.username}}</li>
+        <button class="p-1 outline mx-1" (click)="navToUserStat(relation)">See detailed view</button>
+    </div>
+</div>
+
+
+
+
+<!-- All Questions -->
+<div *ngIf="viewingMode == 'QUESTION'">
+    <h1>Questions: </h1>
+    <div *ngFor="let question of questions; let i=index" class="p-4 m-4 outline w-64">
+        <h1><b><u>{{question.question}}</u></b></h1>
+
+        <div *ngIf="question.answers.length >0">
+            <li *ngFor="let answer of question.answers" 
+            [style.color]="(answer == question.correctAnswer) ? 'green' : 'black'"> 
+            {{answer}} </li>
+        </div>
+
+        <div *ngIf="question.answers.length == 0">
+            <li class="text-green-600"> {{question.correctAnswer}} </li>
+        </div>
+
+        <div class="p-4 m-2 outline">
+            <p>{{question.explanation}}</p>
+        </div>
+
+        <div>
+            <p>Created By: <b>{{question.author.username}}</b></p>
+            <p>Success rate: <b>{{(question.amountTimesAnsweredCorrect / question.amountTimesAnswered) * 100}}%</b></p>
+            <p class="text-xs">Number Of Times Correct: {{question.amountTimesAnsweredCorrect}}</p>
+            <p class="text-xs">Total Times Answered: {{question.amountTimesAnswered}}</p>
+        </div>
+    </div>
+</div>

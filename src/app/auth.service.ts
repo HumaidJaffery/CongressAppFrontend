@@ -37,8 +37,8 @@ export class AuthService {
     }
   }
 
-  public signup(email: string, username: string, password: string): Observable<any> {
-    return this.http.post(`${environment.apiServerUrl}/auth/signup`, {username, email, password}, httpOptions).pipe(
+  public signup(email: string, displayName: string, password: string): Observable<any> {
+    return this.http.post(`${environment.apiServerUrl}/auth/signup`, {displayName, email, password}, httpOptions).pipe(
       map((response: any) => {
           if(response){
             localStorage.setItem('jwt_token', response);
@@ -58,6 +58,10 @@ export class AuthService {
 
   public isLoggedIn(): boolean{
     return !!localStorage.getItem('jwt_token');
+  }
+
+  public getUserInfo():Observable<any> {
+    return this.http.get(`${environment.apiServerUrl}/user/getInfo`);
   }
 
 }

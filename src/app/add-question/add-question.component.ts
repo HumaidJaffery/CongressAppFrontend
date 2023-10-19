@@ -10,19 +10,36 @@ import { QuestionService } from '../question.service';
   styleUrls: ['./add-question.component.css']
 })
 export class AddQuestionComponent implements AfterViewInit, OnInit  {
-  @ViewChild('choicesDiv') choicesDiv: any;
-  @Input() questionNumber: any;
-  @Input() questionTypesAllowed: any;
-  @Input() roomKey: any;
+  @ViewChild('choicesDiv') choicesDiv: any; 
   question: string = "";
-  questionType: string = "MULTIPLECHOICE";
+  correctAnswer: string = ""
+  questionType: any;;
   explanation: string = "";
-  @Input() questionsRequiredPerUser: any; 
+  roomInfo: any;
+  questionNumber: any;
+  roomKey: any; 
+
   
 
   constructor(private renderer: Renderer2, private route: ActivatedRoute, private questionService: QuestionService, private router: Router) { }
 
   ngOnInit() {
+    //getting Room info
+    this.route.queryParams.subscribe((params) => {
+      this.roomInfo = JSON.parse( decodeURIComponent(params['roomInfo']));
+      console.log(this.roomInfo);
+      this.questionType = this.roomInfo.allowedQuestionTypes[0];
+    })
+
+    
+
+    //question Number (out of total questionsRequiredPerUser)
+    this.route.paramMap.subscribe(params => {
+      this.questionNumber = params.get('number');
+      this.roomKey = params.get('key')
+    })
+    console.log(this.roomKey);
+
   }
 
   ngAfterViewInit() {
@@ -30,19 +47,11 @@ export class AddQuestionComponent implements AfterViewInit, OnInit  {
       this.addChoice();
     }
   }
+
   //-----------------------------------------Topics
-  @Input() topics: any;
   selectedTopics: number[] = [];
 
-  //-----------------------------------------FREE RESPONSE: 
-  freeResponseAnswer: string = "";
-
-  //-----------------------------------------TrueOrFalse:
-  isTrue: boolean = true;
-
-
   //submit
-  @Output() nextQuestion = new EventEmitter();
   addQuestion(){
     //base
     var questionModel: Question = {
@@ -50,7 +59,7 @@ export class AddQuestionComponent implements AfterViewInit, OnInit  {
       roomKey: this.roomKey,
       question: this.question,
       answers: [],
-      correctAnswer: [],
+      correctAnswer: this.correctAnswer,
       explanation: this.explanation,
       topicIds: this.selectedTopics
     }
@@ -64,31 +73,22 @@ export class AddQuestionComponent implements AfterViewInit, OnInit  {
         }
       }  
       questionModel.answers = answers;
-      var correctAnswers: string[] = [];
-      for(let i=0; i<this.correctChoices.length; i++){
-        correctAnswers.push(this.correctChoices[i].firstChild.value);
-      } 
-      questionModel.correctAnswer = correctAnswers;
     //Free Response
-    } else if (this.questionType == 'FREERESPONSE') {
-      questionModel.correctAnswer = [this.freeResponseAnswer]; 
-    //True Or False
     } else if (this.questionType == 'TRUEFALSE')  {
       questionModel.answers = ['true', 'false'];
-      questionModel.correctAnswer = [this.isTrue.toString()];
     }
 
-
     this.questionService.createQuestion(questionModel).subscribe(
-      (reponse: any) => {
-        this.nextQuestion.emit(this.questionNumber);
-        if(this.questionNumber == this.questionsRequiredPerUser-1){
-          this.router.navigate(["/home"]);
+      (response: any) => {
+        console.log(this.questionNumber + " " + (this.roomInfo.questionsRequiredPerUser-1));
+        if(this.questionNumber >= this.roomInfo.questionsRequiredPerUser){
+          this.router.navigate([`/quiz/${this.roomKey}`]);
+          return;
         }
-        console.log(this.questionNumber);
+        this.router.navigate([`/question/${this.roomKey}/${parseInt(this.questionNumber) +1}`], 
+        {queryParams: {roomInfo: encodeURIComponent(JSON.stringify(this.roomInfo))}});
       }, (error: any) => {
-        console.log("Error: ");
-        console.log(error);
+        console.log("Error: " + error);
       }
     )
   }
@@ -97,14 +97,12 @@ export class AddQuestionComponent implements AfterViewInit, OnInit  {
   
   //If two or less choices remaining
   cantRemoveChoiceMsg: boolean = false;
-  //containing all divs of choices (input field  + removeButton), the index of the choice is the id of thediv, and the button is set to delete based on that id 
-  //Everytime it deletes, the index in that array is not delete, but rather set to null, so it doesnt mess up the other choices indexes
+  //containing all divs of choices (input field  + removeButton + selectAsCorrectBtn), the index of the choice is the id of the div, 
+  //and the button is set to delete based on that id 
+  //Everytime it deletes, the index in that array is not deleted, but rather set to null, 
+  //so it doesnt mess up the other choices indexes
   choicesArray: any[] = [];
   numOfChoices = 0;
-  correctChoices: any[] = [];
-  addcorrectChoiceEvent = (index: number) =>  {
-    this.addCorrectChoice(index);    
-  };
 
   addChoice(){
     this.numOfChoices++;
@@ -132,25 +130,25 @@ export class AddQuestionComponent implements AfterViewInit, OnInit  {
     const addCorrectChoiceButton = this.renderer.createElement('button');
     addCorrectChoiceButton.type = 'button';
     addCorrectChoiceButton.id = 'addCorrectChoice';
-    addCorrectChoiceButton.textContent = 'Add Correct Choice';
+    addCorrectChoiceButton.textContent = 'Select as Correct Choice';
     this.renderer.listen(addCorrectChoiceButton, 'click', () => {
-      this.addCorrectChoice(div.id)
+      this.selectChoice(div.id)
     })
 
-    const removeCorrectChoiceButton = this.renderer.createElement('button');
-    removeCorrectChoiceButton.type = 'button';
-    removeCorrectChoiceButton.id = 'removeCorrectChoice';
-    removeCorrectChoiceButton.textContent = 'Remove Correct Choice';
-    this.renderer.listen(removeCorrectChoiceButton, 'click', () => {
-      this.removeCorrectChoice(div.id)
-    })
-    removeCorrectChoiceButton.hidden = true;
+    // const removeCorrectChoiceButton = this.renderer.createElement('button');
+    // removeCorrectChoiceButton.type = 'button';
+    // removeCorrectChoiceButton.id = 'removeCorrectChoice';
+    // removeCorrectChoiceButton.textContent = 'Remove Correct Choice';
+    // this.renderer.listen(removeCorrectChoiceButton, 'click', () => {
+    //   this.removeCorrectChoice(div.id)
+    // })
+    // removeCorrectChoiceButton.hidden = true;
 
     this.choicesArray.push(div);
     this.renderer.appendChild(div, input);
     this.renderer.appendChild(div, removeButton);
     this.renderer.appendChild(div, addCorrectChoiceButton);
-    this.renderer.appendChild(div, removeCorrectChoiceButton);
+    // this.renderer.appendChild(div, removeCorrectChoiceButton);
     this.renderer.appendChild(this.choicesDiv.nativeElement, div);
   }
 
@@ -166,23 +164,24 @@ export class AddQuestionComponent implements AfterViewInit, OnInit  {
 
   
 
-  addCorrectChoice(index: number){
+  selectChoice(index: number){
     var correctChoice: any = this.choicesArray[index];
-    this.correctChoices.push(correctChoice);
-    
-    correctChoice.querySelector('#addCorrectChoice').hidden = true;
-    correctChoice.querySelector('#removeCorrectChoice').hidden = false;
+    this.correctAnswer = correctChoice.firstChild.value;
     this.renderer.setStyle(correctChoice, 'outline', '2px solid teal');
+
+    for(let i=0; i<this.choicesArray.length; i++){
+      if(i != index && this.choicesArray[i] != null) this.choicesArray[i].style.outline = "";
+    }
   }
 
-  removeCorrectChoice(index: number){
-    var correctChoice: any = this.choicesArray[index];
-    this.correctChoices.splice(this.correctChoices.indexOf(correctChoice), 1);
+  // removeCorrectChoice(index: number){
+  //   var correctChoice: any = this.choicesArray[index];
+  //   this.correctChoices.splice(this.correctChoices.indexOf(correctChoice), 1);
   
-    correctChoice.querySelector('#addCorrectChoice').hidden = false;
-    correctChoice.querySelector('#removeCorrectChoice').hidden = true;
-    this.renderer.removeStyle(correctChoice, 'outline');
-  }
+  //   correctChoice.querySelector('#addCorrectChoice').hidden = false;
+  //   correctChoice.querySelector('#removeCorrectChoice').hidden = true;
+  //   this.renderer.removeStyle(correctChoice, 'outline');
+  // }
 
 
   

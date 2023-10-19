@@ -15,5 +15,11 @@ export class QuestionService {
     return this.http.post(`${environment.apiServerUrl}/question/add`, question);
   }
 
+  public getQuestions(roomKey: number, numOfQuestions: any){
+    return this.http.get(`${environment.apiServerUrl}/question/get/${roomKey}/${numOfQuestions}`);
+  }
+
+  
+
   
 }

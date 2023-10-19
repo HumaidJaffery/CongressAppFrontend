@@ -1,10 +1,10 @@
 
-<div>
+<div [style.background-color]="roomInfo.bgColor" [style.color]="roomInfo.textColor">
     <div class="w-40 ">
-        <p-listbox [options]="questionTypesAllowed" [(ngModel)]="questionType" class="text-xs"> </p-listbox>
+        <p-listbox [options]="roomInfo.allowedQuestionTypes" [(ngModel)]="questionType" class="text-xs" > </p-listbox>
     </div>
 
-    <h1>{{questionNumber+1}}</h1>
+    <h1>{{questionNumber}}</h1>
 
     <div>
         <div class="outline p-10 w-3/4">
@@ -33,7 +33,7 @@
 
                 <div>
                     <label for="question">Answer: </label>
-                    <input class="outline" type="text" name="answer" [(ngModel)]="freeResponseAnswer">
+                    <input class="outline" type="text" name="answer" [(ngModel)]="correctAnswer">
                 </div>
             </div>
 
@@ -45,8 +45,8 @@
                 </div>
                 
                 <div>
-                    <button type="button" (click)="isTrue = true" class="outline p-2 mx-3" [style.color]="isTrue?'blue' : 'black'" [style.background-color]="isTrue ? 'lightblue' : 'white' ">  True </button>
-                    <button type="button" (click)="isTrue = false" class="outline p-2 mx-3" [style.color]="isTrue?'black' : 'blue' " [style.background-color]="isTrue ? 'white' : 'lightblue' "> False </button>
+                    <button type="button" (click)="correctAnswer = 'true'" class="outline p-2 mx-3" [style.color]="correctAnswer=='true'?'blue' : 'black'" [style.background-color]="correctAnswer=='true'?'lightblue' : 'white' ">  True </button>
+                    <button type="button" (click)="correctAnswer = 'false'" class="outline p-2 mx-3" [style.color]="correctAnswer=='true'?'black' : 'blue' " [style.background-color]="correctAnswer=='true'?'white' : 'lightblue' "> False </button>
                 </div>
             </div>
 
@@ -56,9 +56,7 @@
             </div>
 
             <div id="topics">
-                <!-- <button type="button" *ngFor="let topic of topics" class="outline px-6 py-1 mx-1">{{topic.name}}</button> -->
-                
-                <p-selectButton name="topics" [options]="topics" [(ngModel)]="selectedTopics" [multiple]="true" optionLabel="name" optionValue="id"></p-selectButton>
+                <p-selectButton name="topics" [options]="roomInfo.topics" [(ngModel)]="selectedTopics" [multiple]="true" optionLabel="name" optionValue="id"></p-selectButton>
             </div>
         </div>
 

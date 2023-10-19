@@ -1,6 +1,6 @@
 <header> 
     <h1 class="text-3xl font-bold" (click)="this.router.navigate(['home'])">TogettyQuiz</h1>
-    <button> Profile </button>
+    <button (click)="this.router.navigate(['profile'])" class="p-2 outline m-2"> Profile </button>
 </header>
 
 <router-outlet></router-outlet>

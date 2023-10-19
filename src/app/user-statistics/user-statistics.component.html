@@ -1,0 +1,40 @@
+<h1 class="text-4xl m-5 text-center"> <b>{{this.username}}</b> in <b><u>{{this.roomName}}</u></b> </h1>
+
+<div>
+    <h1 class="text-2xl">Questions Created: </h1>
+
+    <div *ngFor="let question of userRoomRelation.questionsCreated; let i=index" class="p-4 m-4 outline w-64">
+        <h1><b><u>{{question.question}}</u></b></h1>
+
+        <div *ngIf="question.answers.length >0">
+            <li *ngFor="let answer of question.answers" 
+            [style.color]="(answer == question.correctAnswer) ? 'green' : 'black'"> 
+            {{answer}} </li>
+        </div>
+
+        <div *ngIf="question.answers.length == 0">
+            <li class="text-green-600"> {{question.correctAnswer}} </li>
+        </div>
+
+        <div class="p-4 m-2 outline">
+            <p>{{question.explanation}}</p>
+        </div>
+
+        <div>
+            <p>Created By: <b>{{question.author.username}}</b></p>
+            <p>Success rate: <b>{{(question.amountTimesAnsweredCorrect / question.amountTimesAnswered) * 100}}%</b></p>
+            <p class="text-xs">Number Of Times Correct: {{question.amountTimesAnsweredCorrect}}</p>
+            <p class="text-xs">Total Times Answered: {{question.amountTimesAnswered}}</p>
+        </div>
+    </div>
+
+</div>
+
+<div>
+    <h1 class="text-2xl">Quizzes Taken: </h1>
+    <h1 class="text-xl m-3">Average Grade: <b><u>{{userRoomRelation.averageGrade}}</u></b></h1>
+    <div *ngFor="let grade of userRoomRelation.grades" class="text-md p-2 m-3 outline">
+        <h1 > {{grade.submissionTime}}. <b>{{grade.percentage}}%</b> </h1>
+        <button (click)="navToGradedQuiz(grade)">See graded quiz</button>
+    </div>
+</div>

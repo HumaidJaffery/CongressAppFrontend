@@ -1,0 +1,26 @@
+<h1> Percentage: {{gradeInfo.percentage}} </h1>
+
+<div *ngFor="let question of gradeInfo.gradedQuestions; let i=index" class="outline w-52 m-5 p-1" [style.outline]="question.correct? '3px solid green': '3px solid red'">
+    <h1 class="mb-2"><b><u>{{question.question}}</u></b></h1>
+
+    <div *ngIf="question.answers.length == 0">
+        <h1 [style.color]="question.correct? 'green': 'red'">{{question.selectedAnswer}}</h1>
+        <h1 *ngIf="!question.correct" [style.color]="'green'">{{question.correctAnswer}}</h1>
+    </div>
+
+    <div *ngIf="question.answers.length>0" >
+        <li *ngFor="let answer of question.answers" 
+        [style.color]="(question.correct && answer == question.selectedAnswer) ? 'green' : 
+        (!question.correct && answer == question.selectedAnswer)? 'red' : 
+        (!question.correct && answer == question.correctAnswer)? 'green' : 'black'"> 
+        {{answer}} </li>
+    </div>
+
+    <button *ngIf="showExplanation[i]" (click)="showExplanation[i] = false" > Hide explanation </button>
+    <button *ngIf="!showExplanation[i]" (click)="showExplanation[i] = true"> Show Explanation </button>
+
+    <div *ngIf="showExplanation[i]" class="p-4 m-2 outline">
+        {{question.explanation}}
+    </div>
+    <br>
+</div>

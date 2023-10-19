@@ -1,0 +1,32 @@
+<h1 class="text-4xl"> {{userInfo?.displayName}} </h1>
+<p class="text-md">Email: {{userInfo?.email}}</p>
+
+
+<div>
+    <h1 class="text-2xl">Rooms Created:</h1>
+    <div *ngFor="let room of userInfo?.roomsCreated" class="outline p-5 m-3" [style.background-color]="room.bgColor" [style.color]="room.textColor">
+        <h1 class="text-2xl"> {{room.title}} </h1>
+        <p class="text-md"> {{room.description}} </p>
+    </div>
+</div>
+
+<div>
+    <h1 class="text-2xl">Rooms With Quiz already taken:</h1>
+    <div *ngFor="let room of userInfo?.roomWithQuizTaken" class="outline p-5 m-3">
+
+    </div>
+</div>
+
+<div>
+    <h1 class="text-2xl">Rooms you are eligible to take the quiz:</h1>
+    <div *ngFor="let room of userInfo?.roomsEligibleToTakeQuiz" class="outline p-5 m-3">
+
+    </div>
+</div>
+
+<div>
+    <h1 class="text-2xl">Rooms Joined:</h1>
+    <div *ngFor="let room of userInfo?.roomsJoined" class="outline p-5 m-3">
+
+    </div>
+</div>
