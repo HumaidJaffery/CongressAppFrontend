@@ -8,8 +8,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./signup.component.css']
 })
 export class SignupComponent implements OnInit {
+  errorMessage = "";
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private authService: AuthService, public router: Router) { }
 
   ngOnInit(): void {
     if(this.authService.isLoggedIn()){
@@ -27,6 +28,8 @@ export class SignupComponent implements OnInit {
       (error: any) => {
         //to do: implement error
         console.log(error);
+        this.errorMessage = error.error;
+
       }
     )
   }

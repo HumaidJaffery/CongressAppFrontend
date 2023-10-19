@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RoomService } from '../room.service';
 import { Room } from '../Room';
@@ -15,6 +15,7 @@ export class RoomComponent implements OnInit {
   roomDoesntExist = true;
   roomInfo: any = {};
   userRoomInfo: any;
+  @Input() keyword: any;
   
   constructor(private route: ActivatedRoute, private roomService: RoomService, public router: Router, private userRoomService: UserRoomService ) {}
   
@@ -37,7 +38,6 @@ export class RoomComponent implements OnInit {
     this.userRoomService.getUserRoomInfo(this.roomKey).subscribe(
       (response: any) =>{
         this.userRoomInfo = response;
-        console.log(this.userRoomInfo.userStatus);
         console.log(this.userRoomInfo)
       }, (error: any) => {
         console.log(error);
@@ -55,7 +55,7 @@ export class RoomComponent implements OnInit {
       topics: this.roomInfo.topics
     }
     const routeInfoSerialized = encodeURIComponent(JSON.stringify(routeInfo)); 
-    this.router.navigate([`/question/${this.roomInfo.key}/${this.userRoomInfo.questionsCreated.length+1}`], {queryParams: {roomInfo: routeInfoSerialized}});
+    this.router.navigate([`/question/${this.roomInfo.key}/${this.userRoomInfo != null ? this.userRoomInfo.questionsCreated.length+1 : 0}`], {queryParams: {roomInfo: routeInfoSerialized}});
   }
 
   goToGrade(grade:any ){
@@ -66,5 +66,15 @@ export class RoomComponent implements OnInit {
 
   viewStatistics(){
     this.router.navigate([`statistics/${this.roomKey}`], {queryParams: {name: this.roomInfo.title}});
+  }
+
+  likeRoom(){
+    this.roomService.likeRoom(this.roomKey).subscribe();
+    this.userRoomInfo.liked = true;
+  }
+
+  unlikeRoom(){
+    this.roomService.unlikeRoom(this.roomKey).subscribe();
+    this.userRoomInfo.liked = false;
   }
 }

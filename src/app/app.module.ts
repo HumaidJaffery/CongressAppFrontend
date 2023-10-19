@@ -29,6 +29,8 @@ import { StatisticsComponent } from './statistics/statistics.component';
 import { UserStatisticsComponent } from './user-statistics/user-statistics.component';
 import { JoinRoomComponent } from './join-room/join-room.component';
 import { ProfileComponent } from './profile/profile.component';
+import { InputTextModule } from 'primeng/inputtext';
+import { ButtonModule } from 'primeng/button';
 
 
 
@@ -54,16 +56,18 @@ import { ProfileComponent } from './profile/profile.component';
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
     AppRoutingModule,
     FormsModule,
 
     ColorPickerModule,
-    BrowserAnimationsModule,
     SelectButtonModule,
     CheckboxModule,
-    ListboxModule
+    ListboxModule,
+    InputTextModule,
+    ButtonModule
   ],
   providers: [
     {

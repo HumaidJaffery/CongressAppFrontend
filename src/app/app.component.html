@@ -1,8 +1,45 @@
-<header> 
-    <h1 class="text-3xl font-bold" (click)="this.router.navigate(['home'])">TogettyQuiz</h1>
-    <button (click)="this.router.navigate(['profile'])" class="p-2 outline m-2"> Profile </button>
-</header>
+<div class="min-h-screen bg-teal-600 w-screen flex flex-col">
+    <header class="flex-grow-0 h-2/5 flex bg-gradient-to-b from-teal-400 to-teal-500 p-4 justify-center items-center shadow-lg">
+        <div class="p-1">
+            <h1 class="text-5xl font-bold" (click)="this.router.navigate(['home'])">TogettyQuiz</h1>
+        </div> 
 
-<router-outlet></router-outlet>
+        <div class="p-2 mx-2 h-14 flex-row-reverse" *ngIf="this.authService.isLoggedIn()">
+            <i class="pi pi-home outline rounded-3xl p-2 hover:bg-teal-300" style="font-size: 1.5rem" (click)="this.router.navigate(['home'])"></i>
+        </div>
+        
+        <span class="p-input-icon-left w-full">
+            <i class="pi pi-search"></i>
+            <input (ngModelChange)="search($event)" type="text" pInputText name="search" ngModel class="rounded-3xl px-16 w-full" placeholder="Search for public rooms"/>
+        </span>
+        
+
+        <div class=" p-2 mx-2 h-14 flex-row-reverse" *ngIf="this.authService.isLoggedIn()">
+            <i class="pi pi-plus outline rounded-3xl p-2 hover:bg-teal-300" style="font-size: 1.5rem" (click)="this.router.navigate(['create-room'])"></i>
+        </div>
+        
+        <div class="p-2 mx-2 h-14 flex-row-reverse" *ngIf="this.authService.isLoggedIn()">
+            <i class="pi pi-user outline rounded-3xl p-2 hover:bg-teal-300" style="font-size: 1.5rem" (click)="this.router.navigate(['profile'])"></i>
+        </div>
+
+        <div class="flex" *ngIf="!this.authService.isLoggedIn()">
+            <div class="text-2xl outline p-2 w-24 bg-cyan-600 text-center m-6"> 
+                <button (click)="this.router.navigate(['login'])"> Login </button>  
+            </div>
+            
+            <div class="text-2xl outline p-2 w-24 bg-cyan-600 text-center m-6"> 
+                <button (click)="this.router.navigate(['signup'])"> Signup </button> 
+            </div>
+        </div>
+    </header>
+    <hr class="h-px bg-gray-800 border-0">
+    
+    <div class="flex-grow flex flex-row">
+        <div class="flex-grow ">
+            <router-outlet class="w-screen h-full"></router-outlet>
+        </div>
+    </div>
+</div>
+
 
 

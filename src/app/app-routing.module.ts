@@ -21,6 +21,7 @@ const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'signup', component: SignupComponent},
   {path: 'home', component: HomeComponent, canActivate: [AuthGuard]},
+  {path: 'home/:keyword', component: HomeComponent, canActivate: [AuthGuard]},
   {path: 'profile', component: ProfileComponent, canActivate: [AuthGuard]},
   {path: 'create-room', component: CreateRoomComponent, canActivate: [AuthGuard]},
   {path: 'join-room', component: JoinRoomComponent, canActivate: [AuthGuard]},

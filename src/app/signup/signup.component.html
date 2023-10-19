@@ -1,34 +1,60 @@
-<p>signup works!</p>
+<div class="w-screen h-full outline flex">
+    
 
-<!-- <div *ngIf="showErrorMessage" class="outline bg-red-500 h-12 w-3/4 m-auto text-center py-2"> 
-    {{errorMessage}}
-</div> -->
 
-<form #form="ngForm" (ngSubmit)="onSubmit(form.value)">
-    <div>
-        <label for="email">Email: </label>
-        <input type="text" name="email" ngModel>
-    </div>   
-    <div>
-        <label for="username">Username: </label>
-        <input type="text" name="username" ngModel>
-    </div> 
-    <div>
-        <label for="password">Password: </label>
-        <input type="text" name="password" ngModel>
+    <div class="w-1/2 bg-gray-500">
+        <div class="flex items-center justify-center h-full">
+            <div *ngIf="errorMessage != '' " class="outline bg-red-500 h-12 w-3/4 m-auto text-center py-2"> 
+                {{errorMessage}}
+            </div>
+    
+            <form #form="ngForm" (ngSubmit)="onSubmit(form.value)" class=" bg-slate-600 mx-auto outline rounded-md p-8 m-4 text-center ">
+                <div class="flex flex-col justify-center space-y-10">
+                    <div>
+                        <h1 class="text-4xl">Signup</h1>
+                    </div>
+
+                    <div class="flex-row space-y-1 justify-center items-center mx-auto">
+                        <div class="card flex justify-content-center w-full p-6">
+                            <span class="p-float-label drop-shadow-2xl">
+                                <input class="p-4 w-96 text-xl" pInputText id="email" name="email" ngModel />
+                                <label htmlFor="email"><b>Email</b></label>
+                            </span>
+                        </div>  
+    
+                        <div class="card flex justify-content-center w-full p-6">
+                            <span class="p-float-label drop-shadow-2xl">
+                                <input class="p-4 w-96 text-xl" pInputText id="username" name="username" ngModel  />
+                                <label htmlFor="usernmae"><b>Username</b></label>
+                            </span>
+                        </div> 
+    
+                        <div class="card flex justify-content-center w-full p-6">
+                            <span class="p-float-label drop-shadow-2xl">
+                                <input class="p-4 w-96 text-xl" pInputText id="password" name="password" type="password" ngModel  />
+                                <label htmlFor="email"><b>Password</b></label>
+                            </span>
+                        </div> 
+                    </div>
+                    
+        
+                    <div class="m-3 w-full">
+                        <button type="submit" class="font-bold py-3 px-5 rounded outline">Signup</button>
+                        <p (click)="this.router.navigate(['login'])" class="mt-3"> Log in Instead </p>    
+                    </div>
+                </div>
+    
+            </form>
+    
+            
+        </div>
     </div>
 
-    <button type="submit" >Signup</button>
-
-</form>
-
-<div>
-    <p> Forgot password? </p>    
+    <div class="w-1/2 bg-gray-600">
+        <h1>placeholder</h1>
+    </div>
 </div>
 
-<div>
-    <button>Sign in with google instead</button>
-</div>
 
 
 

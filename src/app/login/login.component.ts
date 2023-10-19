@@ -13,7 +13,7 @@ export class LoginComponent implements OnInit {
   showErrorMessage: boolean = false;
   errorMessage = '';
 
-  constructor(private route: ActivatedRoute, private authService: AuthService, private router: Router) { }
+  constructor(private route: ActivatedRoute, private authService: AuthService, public router: Router) { }
 
   ngOnInit(): void {
     if(this.authService.isLoggedIn()){

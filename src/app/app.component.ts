@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from './auth.service';
 
 @Component({
   selector: 'app-root',
@@ -9,5 +10,9 @@ import { Router } from '@angular/router';
 export class AppComponent {
   title = 'CongressAppFrontend';
 
-  constructor(public router: Router) {}
+  constructor(public router: Router, public authService: AuthService, private route: ActivatedRoute) {}
+
+    search(keyword: any){
+      this.router.navigate([`home/${keyword}`]);
+    }
 }

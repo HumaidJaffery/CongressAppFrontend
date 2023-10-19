@@ -23,9 +23,19 @@ export class RoomService {
     return this.http.get(`${environment.apiServerUrl}/room/getPublic/${page}`);
   }
 
-  
+  public searchPublicRooms(page: number, keyword: string): Observable<any> {
+    return this.http.get(`${environment.apiServerUrl}/room/search/${keyword}/${page}`);
+  }
 
   public getTotalNumberOfQuestions(roomKey: number): Observable<any> {
     return this.http.get(`${environment.apiServerUrl}/room/getTotalNumberOfQuestions/${roomKey}`);
+  }
+
+  public likeRoom(roomKey: string): Observable<any> {
+    return this.http.post(`${environment.apiServerUrl}/room/like/${roomKey}`, 1);
+  }
+
+  public unlikeRoom(roomKey: string): Observable<any> {
+    return this.http.post(`${environment.apiServerUrl}/room/unlike/${roomKey}`, 1);
   }
 }
