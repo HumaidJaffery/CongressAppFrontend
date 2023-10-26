@@ -22,21 +22,21 @@
             <i class="pi pi-user outline rounded-3xl p-2 hover:bg-teal-300" style="font-size: 1.5rem" (click)="this.router.navigate(['profile'])"></i>
         </div>
 
-        <div class="flex" *ngIf="!this.authService.isLoggedIn()">
-            <div class="text-2xl outline p-2 w-24 bg-cyan-600 text-center m-6"> 
+        <div class="flex mx-5 gap-4" *ngIf="!this.authService.isLoggedIn()">
+            <div class="text-2xl outline p-2 w-24 bg-teal-200 text-center rounded-lg"> 
                 <button (click)="this.router.navigate(['login'])"> Login </button>  
             </div>
             
-            <div class="text-2xl outline p-2 w-24 bg-cyan-600 text-center m-6"> 
+            <div class="text-2xl outline p-2 w-24 bg-teal-200 text-center rounded-lg"> 
                 <button (click)="this.router.navigate(['signup'])"> Signup </button> 
             </div>
         </div>
     </header>
     <hr class="h-px bg-gray-800 border-0">
     
-    <div class="flex-grow flex flex-row">
-        <div class="flex-grow ">
-            <router-outlet class="w-screen h-full"></router-outlet>
+    <div class="flex-grow flex flex-row w-full">
+        <div class="flex-grow w-full ">
+            <router-outlet class="w-full h-screen"></router-outlet>
         </div>
     </div>
 </div>

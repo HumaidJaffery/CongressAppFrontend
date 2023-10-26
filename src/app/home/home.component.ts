@@ -23,8 +23,8 @@ export class HomeComponent implements OnInit {
       this.route.paramMap.subscribe(params => {
         if(params.get('keyword') != null){
           this.keyword = params.get('keyword');
-          console.log(this.keyword);
-          this.searchPublicRooms(0)
+          this.searchPublicRooms(0);
+          console.log(this.publicRooms);
         } else {
           this.getPublicRooms();
         }
@@ -35,6 +35,7 @@ export class HomeComponent implements OnInit {
     this.publicRooms = [];
     this.roomService.getPublicRooms(this.currPage).subscribe(
       (response: any) => {
+        console.log(response)
         for(let i=0; i<response.content.length; i++){
           this.publicRooms.push(response.content[i]);
         }
@@ -65,8 +66,8 @@ export class HomeComponent implements OnInit {
 
   nextPage(){
     this.currPage++;
-
-    if(this.keyword.equals("")){
+    
+    if(this.keyword == ""){
       if(!this.firstTimeSearch) this.currPage = 0;
       this.getPublicRooms();
     } else {
@@ -78,7 +79,7 @@ export class HomeComponent implements OnInit {
   lastPage(){
     this.currPage--;
 
-    if(this.keyword.equals("")){
+    if(this.keyword == ""){
       if(!this.firstTimeSearch) this.currPage = 0;
       this.getPublicRooms();
     } else {

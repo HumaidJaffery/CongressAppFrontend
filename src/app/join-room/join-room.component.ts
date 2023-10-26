@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -6,9 +6,10 @@ import { Router } from '@angular/router';
   templateUrl: './join-room.component.html',
   styleUrls: ['./join-room.component.css']
 })
-export class JoinRoomComponent {
-  
+export class JoinRoomComponent implements OnInit {
   constructor(private router: Router) {}
+  ngOnInit(): void {
+  }
   
   roomKey: any;
   showErrorMsg = false;
@@ -19,7 +20,16 @@ export class JoinRoomComponent {
       return;
     }
     this.showErrorMsg = true;
-    
+  }
 
+  keyup() {
+    if(this.roomKey.toString().length > 6){
+      this.showErrorMsg = true;
+      this.roomKey = parseInt(this.roomKey.toString().slice(0, 6)); 
+      console.log();
+      console.log(this.roomKey)
+    } else {
+      this.showErrorMsg = false;
+    }
   }
 }

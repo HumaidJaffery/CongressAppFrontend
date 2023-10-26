@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserRoomService } from '../user-room.service';
+import { QuestionService } from '../question.service';
 
 @Component({
   selector: 'app-statistics',
@@ -13,9 +14,10 @@ export class StatisticsComponent implements OnInit{
   averageGrade: any;
   roomKey: any;
   roomName: any;
-  viewingMode: string = "USER";
+  viewingMode: string = "QUESTIONS";
+  deleteCheckIndex = -1;
 
-  constructor(private router: Router, private route: ActivatedRoute, private userRoomService: UserRoomService) {}
+  constructor(private router: Router, private route: ActivatedRoute, private userRoomService: UserRoomService, private questionService: QuestionService) {}
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
@@ -53,5 +55,19 @@ export class StatisticsComponent implements OnInit{
     var serializedRelation = encodeURIComponent(JSON.stringify(relation));
     this.router.navigate([`statistics/${this.roomKey}/${this.roomName}/user/${relation.user.username}`], {queryParams: {relation: serializedRelation}})
   }
+
+  deleteQuestion(index: number){
+    var question = this.questions[index];
+    this.questionService.deleteQuestion(question.id).subscribe(
+      (response: any) => {
+        console.log(response);
+        this.questions.splice(index, 1);
+        this.deleteCheckIndex = -1;
+      }, 
+      (error: any) =>{
+        console.log(error);
+      }
+    )
+  } 
 
 }

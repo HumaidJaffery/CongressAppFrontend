@@ -31,6 +31,8 @@ import { JoinRoomComponent } from './join-room/join-room.component';
 import { ProfileComponent } from './profile/profile.component';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { TabViewModule } from 'primeng/tabview';
 
 
 
@@ -67,7 +69,9 @@ import { ButtonModule } from 'primeng/button';
     CheckboxModule,
     ListboxModule,
     InputTextModule,
-    ButtonModule
+    ButtonModule,
+    InputTextareaModule,
+    TabViewModule
   ],
   providers: [
     {

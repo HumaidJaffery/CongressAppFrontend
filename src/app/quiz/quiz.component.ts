@@ -21,6 +21,7 @@ export class QuizComponent implements OnInit {
   answers: any[] = [];
   missingAnswersError = false;
   missingAnswers: any = [];
+  choicePrefixes =  ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
 
   constructor(private route: ActivatedRoute, private roomService: RoomService, public router: Router, private questionService: QuestionService, private userRoomService: UserRoomService) {}
 
@@ -65,7 +66,6 @@ export class QuizComponent implements OnInit {
     for(let i=0; i<this.numOfQuestions; i++){
       this.answers.push("");
     }
-    console.log(this.answers);
   }
 
   selectAnswer(index: number, type: String, value: String){
@@ -95,12 +95,9 @@ export class QuizComponent implements OnInit {
       answeredQuestions.push(answeredQuestion);
     }
 
-    console.log(answeredQuestions);
     this.userRoomService.gradeQuiz(this.roomKey, answeredQuestions).subscribe(
-      (response: any) => {
-        console.log(response);
-        var serializedGradeInfo = encodeURIComponent(JSON.stringify(response)); 
-        this.router.navigate([`grade/${this.roomKey}`], {queryParams: {gradeInfo: serializedGradeInfo}});
+      (response: any) => { 
+        this.router.navigate([`grade/${this.roomKey}`], {queryParams: {gradeInfoId: response.id}});
       }, (error: any) => {
         console.log(error);
       }

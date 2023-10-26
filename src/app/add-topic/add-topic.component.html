@@ -1,18 +1,19 @@
-
-
-<div class="outline p-4">
-    <form (submit)="addTopic()">
-        <label for="name">Name: </label>
-        <input ngModel #name name="name" type="text" maxlength="35" [(ngModel)]="topicName">
-        <button type="submit" class="outline px-3 m-2"> Add </button>
-    </form>
+<div class=" w-full h-full text-center">
+    <div class="h-2/5">
+        <h1 class="text-3xl h-1/2">Topics: </h1>
+        <form (submit)="addTopic()" class="h-1/2 mt-2">
+            <input class="rounded-lg w-1/2 h-full mx-2 p-3" ngModel name="name" type="text" maxlength="35" #name [(ngModel)]="topicName">
+            <button type="submit" class="
+             w-1/12 h-full px-3 rounded-md hover:bg-blue-400 bg-blue-500"> Add </button>
+        </form>
+    </div>
     
-
-    <div>
-        <ul>
-            <li *ngFor="let topic of topicList">
-            {{ topic }}
-            </li>
-        </ul>
+    
+    <div class="mt-4 flex flex-wrap max-h-16 overflow-y-scroll">
+        <div *ngFor="let topic of topicList; let i=index"  class="h-2/5 overscroll-contain p-2 outline text-lg rounded-md shadow-md m-2 flex" (click)="removeTopic(i)">
+            <p class="mx-3">{{ topic }}</p>
+            <i class="pi pi-delete-left my-auto text-2xl text-red-500"></i>
+        </div>
+            
     </div>
 </div>

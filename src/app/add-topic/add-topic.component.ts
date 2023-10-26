@@ -23,4 +23,8 @@ export class AddTopicComponent {
 
     this.sendTopicList.emit(this.topicList);
   }
+
+  removeTopic(index:number){
+    this.topicList.splice(index, 1);
+  }
 }

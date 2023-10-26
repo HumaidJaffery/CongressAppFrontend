@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { UserRoomService } from '../user-room.service';
 
 @Component({
   selector: 'app-grade',
@@ -11,7 +12,7 @@ export class GradeComponent implements OnInit, AfterViewInit {
   gradeInfo: any;
   showExplanation: any[] = [];
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(private route: ActivatedRoute, private userRoomService: UserRoomService) {}
 
 
   ngAfterViewInit(): void {
@@ -20,8 +21,14 @@ export class GradeComponent implements OnInit, AfterViewInit {
   
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
-      this.gradeInfo = JSON.parse( decodeURIComponent(params['gradeInfo']) );
       console.log(this.gradeInfo);
+      this.userRoomService.getGradeInfo(params['gradeInfoId']).subscribe(
+        (response: any) => {
+          this.gradeInfo = response;
+        }, (error: any) => {
+          console.log(error);
+        }
+      )
     })
 
 

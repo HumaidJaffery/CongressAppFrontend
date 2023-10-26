@@ -29,8 +29,7 @@ export class UserStatisticsComponent implements OnInit {
   }
 
   navToGradedQuiz(grade: any){
-    var serializedGradeInfo =  encodeURIComponent(JSON.stringify(grade));
-    this.router.navigate([`grade/${this.roomKey}`], {queryParams: {gradeInfo: serializedGradeInfo }})
+    this.router.navigate([`grade/${this.roomKey}`], {queryParams: {gradeInfoId: grade.id }})
   }
 
 }

@@ -21,4 +21,8 @@ export class UserRoomService {
   public getUserRoomStatistics(roomKey: number){
     return this.http.get(`${environment.apiServerUrl}/user-room/getUserRoomStatistics/${roomKey}`);
   }
+
+  public getGradeInfo(gradeInfoId: number): Observable<any>{
+    return this.http.get(`${environment.apiServerUrl}/user-room/getGradeFromId/${gradeInfoId}`);
+  }
 }

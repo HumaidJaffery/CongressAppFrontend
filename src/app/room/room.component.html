@@ -1,8 +1,8 @@
 
-<div class="w-screen h-full" [style.background-color]="roomInfo.bgColor" [style.color]="roomInfo.textColor">
-    <div *ngIf="roomDoesntExist">
-        <h1> No room exists with key "{{roomKey}}"</h1>
-        <button (click)="this.router.navigate(['home'])"> Go home </button>
+<div class="min-w-screen h-full flex" [style.background-color]="roomInfo.bgColor" [style.color]="roomInfo.textColor">
+    <div *ngIf="roomDoesntExist" class="w-full h-full flex flex-col justify-center items-center">
+        <h1 class="p-10 text-7xl"> No room exists with key <b> "{{roomKey}}" </b></h1>
+        <button (click)="this.router.navigate(['join-room'])" class="w-1/5 rounded-lg outline text-4xl px-16 py-8 bg-teal-400" type="button"> Go Back </button>
     </div>
     
     <div *ngIf="userRoomInfo?.userStatus == 'BANNED'" >
@@ -10,73 +10,113 @@
         <button (click)="this.router.navigate(['home'])"> Go home </button>
     </div>
 
-    <div class="p-2 h-14">
-        <i class="pi pi-times outline rounded-3xl p-2 hover:bg-teal-300" style="font-size: 1.5rem" (click)="this.router.navigate(['/home'])"></i>
-    </div>
 
-    
-    
-    <div *ngIf="!roomDoesntExist && userRoomInfo?.userStatus != 'BANNED'"  class="text-center">
-        <div>
-            <div class="p-2 h-14" *ngIf="!userRoomInfo?.liked">
-                <i class="pi pi-thumbs-up outline rounded-3xl p-2 hover:bg-teal-300" style="font-size: 1.5rem" (click)="likeRoom()" ></i>
-            </div>
-
-            <div class="p-2 h-14" *ngIf="userRoomInfo?.liked">
-                <i class="pi pi-thumbs-up-fill outline rounded-3xl p-2 hover:bg-teal-300" style="font-size: 1.5rem" (click)="unlikeRoom()" ></i>
-            </div>
+    <div *ngIf="!roomDoesntExist && userRoomInfo?.userStatus != 'BANNED'"  class="text-center h-full w-full flex flex-col justify-center items-center" >
+        <div class="flex justify-items-end items-end w-full p-2 h-14">
+            <i class="pi pi-times outline rounded-3xl p-2 hover:bg-teal-300" style="font-size: 1.5rem" (click)="this.router.navigate(['/home'])"></i>
         </div>
-        
 
-        <div>
-            <h1 class="text-4xl"> {{roomInfo.title }} </h1>
-            <p [style.color]="roomInfo.textColor">{{roomInfo.description}}</p>
-            <h1>Required Questions per user: {{roomInfo.questionsRequiredPerUser}}</h1>
-            <h1> Made by {{roomInfo.owner.displayName}}</h1>
+        
+        <!--Main area-->
+        <div class="w-fullflex justify-center items-center h-full">
+            <div class=" w-full flex flex-row justify-center items-center h-full">
+
+                <div class="w-full h-full flex flex-col justify-center items-center ">
+                    <!--user info-->
+                    <h1 class="text-9xl font-extrabold "> {{roomInfo.title }} </h1>
+
+                    
+                    <div class="flex justify-center items-center">
+                        <h1 class="text-md text-center"> Created by <b> {{roomInfo.owner.displayName}} </b></h1>
+
+                        <div class="flex justify-center items-center px-2">
+                            <i class="pi pi-users rounded-3xl p-2 " style="font-size: 1.5rem"></i>
+                            <small>{{roomInfo.participantCount}}</small>
+                        </div>
+                        
+                        <div class="flex justify-center items-center px-2">
+                            <div *ngIf="userRoomInfo?.userStatus == 'QUIZTAKEN'">
+                                <div class="p-2 h-14 " *ngIf="!userRoomInfo?.liked">
+                                    <i class="pi pi-thumbs-up outline rounded-3xl p-2 hover:bg-teal-300" style="font-size: 1.5rem" (click)="likeRoom()" ></i>
+                                </div>
+                    
+                                <div class="p-2 h-14" *ngIf="userRoomInfo?.liked">
+                                    <i class="pi pi-thumbs-up-fill outline rounded-3xl p-2 " style="font-size: 1.5rem; background-color: green;" (click)="unlikeRoom()" ></i>
+                                </div>
+                            </div>
+
+                            <div *ngIf="userRoomInfo?.userStatus != 'QUIZTAKEN'">
+                                <i class="pi pi-thumbs-up rounded-3xl p-2" style="font-size: 1.5rem"></i>
+                            </div>
+
+                            <small class="my-auto">{{roomInfo.likes}}</small>
+                            
+                        </div>
+                    </div>
+
+                    <p [style.color]="roomInfo.textColor" class="text-center text-3xl w-5/6 break-all">{{roomInfo.description}}</p>
     
-            <div>
-                <h1>Topics: </h1>
-                <div *ngFor="let topic of roomInfo.topics">
-                    <h1>{{topic.name}}</h1>
+
+                    <!--buttons-->
+                    <div class="my-6">
+                        <div *ngIf="userRoomInfo?.userStatus == null">
+                            <div>
+                                <button class="outline px-8 py-5 rounded-xl text-2xl bg-teal-400 hover:bg-teal-300" (click)="joinRoom()"> Start Quiz </button>
+                                <h1 class=" font-light text-teal-400">Questions needed to access Quiz: {{roomInfo.questionsRequiredPerUser}}</h1>
+                            </div>
+                        </div>
+                
+                        <div *ngIf="userRoomInfo?.userStatus == 'ROOMJOINED'">
+                            <div>
+                                <button class="outline px-8 py-5 rounded-xl text-2xl bg-teal-400 hover:bg-teal-300" (click)="joinRoom()"> Start Quiz </button>
+                                <h1 class="font-light text-teal-400 ">Questions needed to access Quiz: <b> {{roomInfo.questionsRequiredPerUser - userRoomInfo.questionsCreated.length}} </b></h1>
+                            </div>
+                        </div>  
+                    
+                        <div *ngIf="userRoomInfo?.userStatus == 'CANTAKEQUIZ'">
+                            <div>
+                                <button class="outline px-8 py-5 rounded-xl text-2xl bg-teal-400 hover:bg-teal-300" (click)="router.navigate(['quiz/' + roomKey])"> Take Quiz </button>
+                                <h1 class="font-light text-teal-400">You are eligible to take the Quiz</h1>
+                            </div>
+                        </div>  
+
+                        <div *ngIf="userRoomInfo?.userStatus == 'QUIZTAKEN'">
+                            <h1 class="text-xl underline"> Previous grades: </h1>
+                            <h1>Average Grade: <b>{{userRoomInfo?.averageGrade}}% </b></h1>
+                            <div *ngFor="let grade of userRoomInfo.grades; let i = index" class="flex gap-2 m-3"> 
+                                <h1> <b>{{grade.percentage}}%:  </b> <small>{{grade.submissionTime.toString()}} </small></h1>
+                                <button (click)="goToGrade(grade)" class="hover:underline font-bold"> See Detailed Info</button>
+                            </div>
+                            <button class="outline px-8 py-5 rounded-xl text-2xl bg-teal-400 hover:bg-teal-300" (click)="router.navigate(['quiz/' + roomKey])"> Take Quiz Again </button>
+                        </div> 
+
+                        <div *ngIf="userRoomInfo?.userStatus == 'OWNER'" class="flex gap-4">
+                            <button class="outline px-8 py-5 rounded-xl text-2xl bg-teal-400 hover:bg-teal-300" (click)="viewStatistics()"> View Statistics </button>
+                            <button class="outline px-8 py-5 rounded-xl text-2xl bg-teal-400 hover:bg-teal-300" (click)="router.navigate(['quiz/' + roomKey])"> Take Quiz </button>
+                        </div> 
+                    </div>
+
+                    <!--topics-->
+                    <div class="outline w-1/2 p-4">
+                        <h1 class="underline p-2 text-xl">Topics </h1>
+                        <h1 class="font-extralight p-2 text-lg" *ngIf="roomInfo.topics.length == 0">No topics </h1>
+                        <div *ngFor="let topic of roomInfo.topics">
+                            <h1>{{topic.name}}</h1>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
     
-        <div *ngIf="userRoomInfo?.userStatus == null">
-            <div>
-                <h1>Questions needed to access Quiz: {{roomInfo.questionsRequiredPerUser}}</h1>
-                <button class="my-4 outline px-5 py-3" (click)="joinRoom()"> Start Quiz </button>
-            </div>
-        </div>
-
-        <div *ngIf="userRoomInfo?.userStatus == 'ROOMJOINED'">
-            <div>
-                <h1>Questions needed to access Quiz: {{roomInfo.questionsRequiredPerUser - userRoomInfo.questionsCreated.length}}</h1>
-                <button class="my-4 outline px-5 py-3" (click)="joinRoom()"> Start Quiz </button>
-            </div>
-        </div>  
+        
     
-        <div *ngIf="userRoomInfo?.userStatus == 'CANTAKEQUIZ'">
-            <div>
-                <h1>You are eligible to take the Quiz</h1>
-                <button class="my-4 outline px-5 py-3" (click)="router.navigate(['quiz/' + roomKey])"> Take Quiz </button>
-            </div>
-        </div>  
-    
-        <div *ngIf="userRoomInfo?.userStatus == 'QUIZTAKEN'">
-            <h1>Previous grades: </h1>
-            <div *ngFor="let grade of userRoomInfo.grades; let i = index"> 
-                <h1> <b>{{grade.percentage}}%:  </b> <small>{{grade.submissionTime.toString()}} </small></h1>
-                <button (click)="goToGrade(grade)"> See Detailed Info</button>
-            </div>
-            <button class="my-4 outline px-5 py-3" (click)="router.navigate(['quiz/' + roomKey])"> Take Quiz Again </button>
-        </div> 
+        
 
-        <div *ngIf="userRoomInfo?.userStatus == 'OWNER'">
-            <button class="outline p-2 m-2" (click)="viewStatistics()"> View Statistics </button>
-            <button class="my-4 outline px-5 py-3" (click)="router.navigate(['quiz/' + roomKey])"> Take Quiz </button>
-        </div> 
+        
     
     </div>
+
+    
 </div>
 

@@ -1,24 +1,17 @@
-<div class="h-full flex justify-center items-center">
-    <div *ngIf="noRoomsFound" class="text-5xl absolute">
-        <h1><b>No Rooms Found</b></h1>
+<div class="w-full h-full flex justify-center items-center">
+    <div *ngIf="publicRooms.length == 0" class="w-full h-full text-center text-3xl flex justify-center items-center m-10">
+        <h1>No Rooms Found</h1>
     </div>
 
-    <div class="p-2 mx-10 h-14 mb-20">
-        <i *ngIf="currPage > 0" class="pi pi-arrow-left outline rounded-3xl p-2 hover:bg-teal-300" style="font-size: 1.5rem" (click)="lastPage()"></i>
+    <div class="p-2 mx-10 flex items-center justify-center mt-20">
+        <i *ngIf="currPage > 0" class=" pi pi-arrow-left outline rounded-3xl p-2 hover:bg-teal-300" style="font-size: 1.5rem" (click)="lastPage()"></i>
     </div>
 
-    <div class="h-full w-2/3 oultine">
-        <div class="my-10 grid grid-rows-2 grid-cols-5 gap-10 h-4/5">
-            <div class="row-span-1 col-span-1 outline text-left rounded-xl p-4 " *ngFor="let room of publicRooms" [style.background-color]="room.bgColor" [style.color]="room.textColor" (click)="this.router.navigate(['room/' + room.key])">
-                <p class="text-xs">Made By <b>{{room.owner.displayName}}</b></p>
-                <h1 class="text-3xl">{{room.title}}</h1>
-                <h1 class="text-lg">{{room.description}}</h1>
-                <p> </p>
-            </div>
-        </div>
+    
 
-        <div class="flex justify-center items-center">
-            <div>
+    <div class="h-full w-2/3" *ngIf="publicRooms.length > 0">
+        <div class="h-1/5 flex justify-center items-center">
+            <div class="my-10">
                 <button (click)="this.router.navigate(['create-room'])" class="bg-blue-600 hover:bg-blue-500 text-white font-bold text-3xl py-3 px-4 border-b-4 border-blue-800 hover:border-blue-500 rounded mx-2"> 
                     Create Quiz
                 </button>
@@ -29,9 +22,22 @@
                 </button>
             </div>
         </div>
+
+        <div class=" h-4/5 sm:gap-2 lg:gap-10 md:gap-7 grid lg:grid-rows-4 lg:grid-cols-3 md:grid-rows-6 md:grid-cols-2 sm:grid-rows-12 sm:grid-cols-1 ">
+            <div class="overflow-hidden max-h-96 row-span-1 col-span-1 outline text-left rounded-xl p-4 " *ngFor="let room of publicRooms" 
+            [style.background-color]="room.bgColor" [style.color]="room.textColor" 
+            (click)="this.router.navigate(['room/' + room.key])">
+                <p class="text-xs break-all">Made By <b>{{room.owner.displayName}}</b></p>
+                <h1 class="text-3xl break-all">{{room.title}}</h1>
+                <h1 class="text-lg break-all" max>{{room.description}}</h1>
+                <p> </p>
+            </div>
+        </div>
+
+        
     </div>
 
-    <div class="p-2 mx-10 h-14 mb-20">
+    <div class="p-2 mx-10 flex items-center justify-center mt-20">
         <i *ngIf="isNextPage" class="pi pi-arrow-right outline rounded-3xl p-2 hover:bg-teal-300" style="font-size: 1.5rem" (click)="nextPage()"></i>
     </div>
 </div>

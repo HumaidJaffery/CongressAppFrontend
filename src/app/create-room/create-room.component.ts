@@ -12,7 +12,7 @@ import { QuestionType } from '../QuestionType';
 })
 export class CreateRoomComponent implements OnInit {
   questionsPerUserValue = 2;
-  backgroundColor: string = '#FFFFFF';
+  backgroundColor: string = '';
   textColor: string = '#000000';
   isPublic = false;
   showAddTopic = false;

@@ -1,12 +1,26 @@
-<div>
-    <label for="key">Please enter 6 digit Room key: </label>
-    <!--Fix this later-->
-    <input name="key" [(ngModel)]="roomKey" type="number" class="p-8 outline bg-slate-300" maxlength="999999"> 
-    <button (click)="submit()" class="m-5 p-3 outline"> Join Room</button>
-
-    <div *ngIf="showErrorMsg">
-        <h1 class="text-xl text-red-500">Please enter exactly six digits</h1>
+<div class="w-full h-full flex flex-col justify-center items-center" autofocus>
+    <div class="h-1/5">
+        <h1 class="lg:text-7xl md:text-5xl">Join Room</h1>
     </div>
+
+    <div class="h-4/5 flex flex-col w-full items-center" autofocus>
+        <div class="">
+            <p for="key" class="lg:text-lg md:text-sm p-3">Please enter 6 digit Room key: </p>
+        </div>
+        
+        <div class="w-full items-center text-center">
+            <input #key autofocus (keyup)="keyup()" class="text-center peer text h-full border-b-2 border-blue-slate-600 bg-transparent pt-2 pb-4 font-sans lg:text-7xl md:text-4xl outline outline-0 w-1/2" name="key" [(ngModel)]="roomKey" type="number"  maxlength="999999"> 
+        </div>
+
+        <div>
+            <button (click)="submit()" class="m-5 px-14 py-5 outline rounded-lg text-4xl hover:bg-blue-500 bg-teal-300"> Join </button>
+        </div>
+    
+        <div *ngIf="showErrorMsg">
+            <h1 class="lg:text-xl md:text-sm text-red-500">Please enter six digits</h1>
+        </div>
+    </div>
+
 </div>
 
 

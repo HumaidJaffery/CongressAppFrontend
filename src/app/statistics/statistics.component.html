@@ -1,53 +1,100 @@
-<h1 class="text-4xl text-center m-2">{{this.roomName}}</h1>
-
-
-<div>
-    <h1 class="text-2xl">Average Grade: <b> {{averageGrade}}%</b></h1>
-    <p>The number of Users: <b>{{userRoomRelations?.length - 1}} </b></p>
-    <p>The number of Questions: <b>{{questions?.length}} </b></p>
-    <button class="mx-5 my-1 p-2 outline" (click)="viewingMode = 'USER'"> User </button>
-    <button class="mx-5 my-1 p-2 outline" (click)="viewingMode = 'QUESTION'"> Question </button>
-</div>
-
-
-
-<!-- Users-->
-<div *ngIf="viewingMode == 'USER'">
-    <h1>Users: </h1>
-    <div *ngFor="let relation of userRoomRelations">
-        <li>{{relation.user.username}}</li>
-        <button class="p-1 outline mx-1" (click)="navToUserStat(relation)">See detailed view</button>
+<div class="h-full bg-teal-700">
+    <div class="flex flex-col justify-center items-center ">
+        <h1 class="lg:text-7xl md:text-4xl font-extrabold text-center m-2">{{this.roomName}}</h1>
     </div>
-</div>
-
-
-
-
-<!-- All Questions -->
-<div *ngIf="viewingMode == 'QUESTION'">
-    <h1>Questions: </h1>
-    <div *ngFor="let question of questions; let i=index" class="p-4 m-4 outline w-64">
-        <h1><b><u>{{question.question}}</u></b></h1>
-
-        <div *ngIf="question.answers.length >0">
-            <li *ngFor="let answer of question.answers" 
-            [style.color]="(answer == question.correctAnswer) ? 'green' : 'black'"> 
-            {{answer}} </li>
+    
+    
+    <div>
+        <div class="w-full flex justify-evenly my-3">
+            <div class="text-center flex flex-col gap-y-5">
+                <p class="lg:text-2xl md:text-xl" >Average Grade: <b> {{averageGrade == "NaN"? "None" : averageGrade + "%"}}</b></p>
+                <button class="lg:text-2xl md:text-xl font-serif" [style.borderBottom]=" viewingMode == 'GRADES' ? 'solid aqua' : ''" 
+                [style.color]=" viewingMode == 'GRADES' ? 'aqua' : ''" 
+                (click)="viewingMode = 'GRADES'"> Grades </button>
+            </div>
+            <div class="text-center flex flex-col gap-y-5">
+                <p class="lg:text-2xl md:text-xl">The number of Users: <b>{{userRoomRelations?.length}} </b></p>
+                <button class="lg:text-2xl md:text-xl font-serif" 
+                [style.borderBottom]=" viewingMode == 'USERS' ? 'solid aqua' : ''" 
+                [style.color]=" viewingMode == 'USERS' ? 'aqua' : ''" 
+                (click)="viewingMode = 'USERS'"> Users </button>
+            </div>
+            <div class="text-center flex flex-col gap-y-5">
+                <p class="lg:text-2xl md:text-xl">The number of Questions: <b>{{questions?.length}} </b></p>
+                <button class="lg:text-2xl md:text-xl font-serif" [style.borderBottom]=" viewingMode == 'QUESTIONS' ? 'solid aqua' : ''"
+                [style.color]=" viewingMode == 'QUESTIONS' ? 'aqua' : ''" 
+                (click)="viewingMode = 'QUESTIONS'"> Questions </button>
+            </div>
         </div>
-
-        <div *ngIf="question.answers.length == 0">
-            <li class="text-green-600"> {{question.correctAnswer}} </li>
+    </div>
+    
+    
+    
+    <!-- Users-->
+    <div *ngIf="viewingMode == 'USERS'" class="w-full flex justify-center">
+        <div class="gap-5 m-3 text-center flex justify-center items-center w-3/4 flex-wrap" >
+            <div *ngFor="let relation of userRoomRelations"
+            (click)="navToUserStat(relation)" 
+            class="w-32 h-28 p-1 outline rounded-lg hover:p-2 hover:m-1 hover:bg-teal-500 flex flex-col justify-center ">
+                <p class="lg:text-2xl self-center">{{relation.user.displayName}}</p>
+                <button class="p-1 mx-1 text-xs" >See detailed view</button>
+            </div>
         </div>
+    </div>
+    
+    <!-- All Questions -->
+    <div *ngIf="viewingMode == 'QUESTIONS'" class="flex justify-center">
+        <div class="gap-4 text-center flex justify-center items-center w-3/4 flex-wrap" >
+            <div *ngFor="let question of questions; let i=index" class="p-4 m-4 outline w-64 min-h-80 rounded-lg">
+                <div *ngIf="deleteCheckIndex != i ">
+                    <div class="flex items-center">
+                        <h1 class="text-2xl w-full"><u>{{question.question}}</u></h1>
+                        <i class="pi pi-trash float-right w-1/6" style="float: right; font-size: 1.5rem; color: darkred;"
+                        (click)="deleteCheckIndex = i;"
+                        ></i>
+                    </div>
+                    <div *ngIf="question.answers.length >0">
+                        <li *ngFor="let answer of question.answers" 
+                        [style.color]="(answer == question.correctAnswer) ? 'aqua' : 'black'"
+                        [style.fontWeight]="(answer == question.correctAnswer) ? 'bold' : 'font-normal'"
+                        class="text-lg"
+                        > 
+                        {{answer}} </li>
+                    </div>
+            
+                    <div *ngIf="question.answers.length == 0">
+                        <p class="text-[aqua] font-bold"> {{question.correctAnswer}} </p>
+                    </div>
+            
+                    <div class="p-4 m-2">
+                        <p class="text-xs">Explanation: </p>
+                        <p>{{question.explanation}}</p>
+                    </div>
+            
+                    <div>
+                        <p>Created By: <b>{{question.author.displayName}}</b></p>
+                        <p>Success rate: <b>{{(question.amountTimesAnsweredCorrect / question.amountTimesAnswered) * 100}}%</b></p>
+                        <p class="text-xs">Number Of Times Correct: {{question.amountTimesAnsweredCorrect}}</p>
+                        <p class="text-xs">Total Times Answered: {{question.amountTimesAnswered}}</p>
+                    </div>
+                </div>
 
-        <div class="p-4 m-2 outline">
-            <p>{{question.explanation}}</p>
-        </div>
+                <div class="w-full min-h-full py-16 flex flex-col gap-5 justify-center items-center" *ngIf="deleteCheckIndex == i">
+                    <h1 class="break-words text-xl">Are you sure you want to permanently delete this question?</h1>
+                    <button class=" w-2/3 text-xl outline rounded-lg bg-red-400 outline-red-600" (click)="deleteQuestion(i)"> Yes </button>
+                    <button  class=" w-2/3 text-xl outline rounded-lg bg-teal-400 outline-teal-600"
+                    (click)="deleteCheckIndex = -1" >
+                     Cancel </button>
+                </div>
+            </div>
 
-        <div>
-            <p>Created By: <b>{{question.author.username}}</b></p>
-            <p>Success rate: <b>{{(question.amountTimesAnsweredCorrect / question.amountTimesAnswered) * 100}}%</b></p>
-            <p class="text-xs">Number Of Times Correct: {{question.amountTimesAnsweredCorrect}}</p>
-            <p class="text-xs">Total Times Answered: {{question.amountTimesAnswered}}</p>
+
+            <!--Grades-->
+            <div>
+
+            </div>
+
+            
         </div>
     </div>
 </div>

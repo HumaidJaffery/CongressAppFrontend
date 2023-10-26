@@ -1,26 +1,54 @@
-<h1> Percentage: {{gradeInfo.percentage}} </h1>
+<div class="flex flex-col justify-center items-center text-center p-8 gap-1">
+    <h1 class="text-5xl "> Percentage: <b>{{gradeInfo.percentage}}%</b> </h1>
+    <p>Time taken: {{gradeInfo.submissionTime}}</p>
+</div>
 
-<div *ngFor="let question of gradeInfo.gradedQuestions; let i=index" class="outline w-52 m-5 p-1" [style.outline]="question.correct? '3px solid green': '3px solid red'">
-    <h1 class="mb-2"><b><u>{{question.question}}</u></b></h1>
+<div class="flex flex-col w-full items-center justify-center gap-10" >
 
-    <div *ngIf="question.answers.length == 0">
-        <h1 [style.color]="question.correct? 'green': 'red'">{{question.selectedAnswer}}</h1>
-        <h1 *ngIf="!question.correct" [style.color]="'green'">{{question.correctAnswer}}</h1>
+    <div *ngFor="let question of gradeInfo.gradedQuestions; let i=index" 
+    class="w-3/4 rounded-lg" 
+    [style.outline]="question.correct? '3px solid green': '3px solid red'">
+
+        <div class="flex">
+            <div class="m-2 w-5 h-5 p-5 outline rounded-full flex justify-center items-center"
+            [style.backgroundColor]="question.correct? 'green': 'red'">
+                <h1 class="text-center text-xl">{{i+1}}</h1>
+            </div>
+            <div class="flex justify-center items-center">
+                <h1 class="lg:text-2xl md:text-xl">{{question.question}}</h1>
+            </div>
+        </div>
+    
+        <!--Free Response-->
+        <div *ngIf="question.answers.length == 0" class="text-xl pl-10 flex flex-col gap-1 ">
+            <div class="flex gap-1">
+                <h1>Your answer:</h1>
+                <h1 [style.color]="question.correct? 'green': 'red'"> {{question.selectedAnswer}}</h1>
+            </div>
+            <div class="flex gap-1">
+                <h1>correctAnswer:</h1>
+                <h1 *ngIf="!question.correct" [style.color]="'green'"> {{question.correctAnswer}}</h1>
+            </div>
+        </div>
+    
+        <!--MCQ + True False-->
+        <div *ngIf="question.answers.length>0" class="text-xl pl-10 flex flex-col gap-1 ">
+            <li *ngFor="let answer of question.answers" 
+            [style.color]="(question.correct && answer == question.selectedAnswer) ? 'green' : 
+            (!question.correct && answer == question.selectedAnswer)? 'red' : 
+            (!question.correct && answer == question.correctAnswer)? 'green' : 'black'"
+            class=""> 
+            {{answer}} </li>
+        </div>
+    
+        <div class="p-4 text-sm pl-10 flex flex-col gap-1 ">
+            <button *ngIf="showExplanation[i]" (click)="showExplanation[i] = false" > Hide explanation </button>
+            <button *ngIf="!showExplanation[i]" (click)="showExplanation[i] = true"> Show Explanation </button>
+        </div>
+    
+        <div *ngIf="showExplanation[i]" class="p-4 mx-10 outline outline-gray-800 rounded text-lg">
+            {{question.explanation}}
+        </div>
+        <br>
     </div>
-
-    <div *ngIf="question.answers.length>0" >
-        <li *ngFor="let answer of question.answers" 
-        [style.color]="(question.correct && answer == question.selectedAnswer) ? 'green' : 
-        (!question.correct && answer == question.selectedAnswer)? 'red' : 
-        (!question.correct && answer == question.correctAnswer)? 'green' : 'black'"> 
-        {{answer}} </li>
-    </div>
-
-    <button *ngIf="showExplanation[i]" (click)="showExplanation[i] = false" > Hide explanation </button>
-    <button *ngIf="!showExplanation[i]" (click)="showExplanation[i] = true"> Show Explanation </button>
-
-    <div *ngIf="showExplanation[i]" class="p-4 m-2 outline">
-        {{question.explanation}}
-    </div>
-    <br>
 </div>

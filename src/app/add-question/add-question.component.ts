@@ -18,8 +18,7 @@ export class AddQuestionComponent implements AfterViewInit, OnInit  {
   roomInfo: any;
   questionNumber: any;
   roomKey: any; 
-
-  
+  errorMsg: string = "";
 
   constructor(private renderer: Renderer2, private route: ActivatedRoute, private questionService: QuestionService, private router: Router) { }
 
@@ -36,6 +35,7 @@ export class AddQuestionComponent implements AfterViewInit, OnInit  {
     //question Number (out of total questionsRequiredPerUser)
     this.route.paramMap.subscribe(params => {
       this.questionNumber = params.get('number');
+      this.questionNumber = parseInt(this.questionNumber);
       this.roomKey = params.get('key')
     })
     console.log(this.roomKey);
@@ -53,6 +53,7 @@ export class AddQuestionComponent implements AfterViewInit, OnInit  {
 
   //submit
   addQuestion(){
+    console.log("here")
     //base
     var questionModel: Question = {
       questionType: this.questionType,
@@ -69,9 +70,21 @@ export class AddQuestionComponent implements AfterViewInit, OnInit  {
       var answers: string[] = [];
       for(let i=0; i<this.choicesArray.length; i++){
         if(this.choicesArray[i] != null){
+          console.log(this.choicesArray[i])
+          if(this.choicesArray[i].firstChild.value == '') {
+            this.errorMsg = "None of your choices can be empty";
+            return;
+          }
           answers.push(this.choicesArray[i].firstChild.value);
         }
-      }  
+      } 
+      console.log(answers)
+      if(answers.length < 2) {
+        this.errorMsg = "You have to have atleast 2 choices"
+        this.addChoice();
+        if(answers.length == 0) this.addChoice();
+        return;
+      } 
       questionModel.answers = answers;
     //Free Response
     } else if (this.questionType == 'TRUEFALSE')  {
@@ -80,6 +93,7 @@ export class AddQuestionComponent implements AfterViewInit, OnInit  {
 
     this.questionService.createQuestion(questionModel).subscribe(
       (response: any) => {
+        console.log(response);
         console.log(this.questionNumber + " " + (this.roomInfo.questionsRequiredPerUser-1));
         if(this.questionNumber >= this.roomInfo.questionsRequiredPerUser){
           this.router.navigate([`/quiz/${this.roomKey}`]);
@@ -94,9 +108,6 @@ export class AddQuestionComponent implements AfterViewInit, OnInit  {
   }
 
   //-----------------------------------------MULTIPLE CHOICE:
-  
-  //If two or less choices remaining
-  cantRemoveChoiceMsg: boolean = false;
   //containing all divs of choices (input field  + removeButton + selectAsCorrectBtn), the index of the choice is the id of the div, 
   //and the button is set to delete based on that id 
   //Everytime it deletes, the index in that array is not deleted, but rather set to null, 
@@ -106,10 +117,13 @@ export class AddQuestionComponent implements AfterViewInit, OnInit  {
 
   addChoice(){
     this.numOfChoices++;
+    this.errorMsg = "";
     const div = this.renderer.createElement('div');
     this.renderer.addClass(div, "my-2");
     this.renderer.addClass(div, "p-2");
-    this.renderer.addClass(div, "w-3/4");
+    this.renderer.addClass(div, "w-full");
+    this.renderer.addClass(div, "flex");
+    this.renderer.addClass(div, "gap-4");
     div.id = this.choicesArray.length;
     
     const input =  this.renderer.createElement('input');
@@ -118,7 +132,9 @@ export class AddQuestionComponent implements AfterViewInit, OnInit  {
     this.renderer.addClass(input, "p-2");
     this.renderer.addClass(input, "border-b-2");
     this.renderer.addClass(input, "border-slate-950");
-    this.renderer.addClass(input, "w-3/4");
+    this.renderer.addClass(input, "w-2/3");
+    this.renderer.addClass(input, "border-b");
+    this.renderer.addClass(input, "bg-transparent");
     
     const removeButton = this.renderer.createElement('button');
     removeButton.type = 'button';
@@ -126,6 +142,12 @@ export class AddQuestionComponent implements AfterViewInit, OnInit  {
     this.renderer.listen(removeButton, 'click', () => {
       this.removeChoice(div.id)
     })
+    this.renderer.addClass(removeButton, "1/6");
+    this.renderer.addClass(removeButton, "p-3");
+    this.renderer.addClass(removeButton, "outline");
+    this.renderer.addClass(removeButton, "rounded-xl");
+    this.renderer.addClass(removeButton, "text-red-500");
+    
 
     const addCorrectChoiceButton = this.renderer.createElement('button');
     addCorrectChoiceButton.type = 'button';
@@ -134,6 +156,11 @@ export class AddQuestionComponent implements AfterViewInit, OnInit  {
     this.renderer.listen(addCorrectChoiceButton, 'click', () => {
       this.selectChoice(div.id)
     })
+    this.renderer.addClass(addCorrectChoiceButton, "1/6");
+    this.renderer.addClass(addCorrectChoiceButton, "p-3");
+    this.renderer.addClass(addCorrectChoiceButton, "outline");
+    this.renderer.addClass(addCorrectChoiceButton, "rounded-xl");
+    this.renderer.addClass(addCorrectChoiceButton, "text-green-500");
 
     // const removeCorrectChoiceButton = this.renderer.createElement('button');
     // removeCorrectChoiceButton.type = 'button';
@@ -154,7 +181,7 @@ export class AddQuestionComponent implements AfterViewInit, OnInit  {
 
   removeChoice(index: number): void{
     if(this.numOfChoices<3){
-      this.cantRemoveChoiceMsg = true;
+      this.errorMsg = "You Can't have less than two choices";
       return;
     }
     this.numOfChoices--;
@@ -167,7 +194,9 @@ export class AddQuestionComponent implements AfterViewInit, OnInit  {
   selectChoice(index: number){
     var correctChoice: any = this.choicesArray[index];
     this.correctAnswer = correctChoice.firstChild.value;
-    this.renderer.setStyle(correctChoice, 'outline', '2px solid teal');
+
+    this.renderer.setStyle(correctChoice, 'outline', '8px solid green');
+    this.renderer.setStyle(correctChoice, 'border-radius', '20px');
 
     for(let i=0; i<this.choicesArray.length; i++){
       if(i != index && this.choicesArray[i] != null) this.choicesArray[i].style.outline = "";
@@ -182,7 +211,5 @@ export class AddQuestionComponent implements AfterViewInit, OnInit  {
   //   correctChoice.querySelector('#removeCorrectChoice').hidden = true;
   //   this.renderer.removeStyle(correctChoice, 'outline');
   // }
-
-
   
 }

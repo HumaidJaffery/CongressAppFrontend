@@ -1,66 +1,77 @@
 
-<div [style.background-color]="roomInfo.bgColor" [style.color]="roomInfo.textColor">
-    <div class="w-40 ">
-        <p-listbox [options]="roomInfo.allowedQuestionTypes" [(ngModel)]="questionType" class="text-xs" > </p-listbox>
+<div [style.background-color]="roomInfo.bgColor" [style.color]="roomInfo.textColor" class="flex flex-col justify-center items-center">
+    <div class="w-full m-3 flex flex-row justify-center items-center gap-2">
+        <div class="w-fit px-5 py-4 outline rounded-full">
+            <h1>{{questionNumber}}</h1>
+        </div>
+        <h1>out of <b>{{roomInfo.questionsRequiredPerUser}}</b></h1>
     </div>
+    
 
-    <h1>{{questionNumber}}</h1>
-
-    <div>
-        <div class="outline p-10 w-3/4">
-            <div [hidden]="questionType != 'MULTIPLECHOICE' " >
-                <div *ngIf="cantRemoveChoiceMsg">
-                    <h1 class="text-lg text-red-500">Multiple Choice questions must have atleast two choices</h1>
+    <div class="w-full flex justify-center items-center">
+        <div class="outline p-10 w-3/4 flex flex-col justify-center items-center">
+            <div class="w-full flex flex-col justify-center items-center">
+                <div class="flex-grow-0 text-center w-1/5" *ngIf="this.roomInfo?.allowedQuestionTypes.length>1">
+                    <p-listbox [options]="this.roomInfo?.allowedQuestionTypes" [(ngModel)]="questionType" class="text-xl" > </p-listbox>
                 </div>
-
-                <div class="m-1 my-2" >
-                    <label for="question">Question: </label>
-                    <input class="outline" type="text" name="question" [(ngModel)]="question">
-                </div>
-
-                <div #choicesDiv> 
+    
+                <!--answers + question-->
+                <div class="w-full h-1/3  flex flex-col">
                     
+                    <!--Question -->
+                    <div class=" my-5 flex flex-col items-center w-full" >
+                        <label for="question" class="text-2xl m-2 h-1/4">Question: </label>
+                        <input class="w-2/3 h-1/2 text-center border-b-2 bg-transparent text-4xl" type="text" name="question" [(ngModel)]="question">
+                    </div>
+    
+                <!--answers-->
+                <div class="w-full">
+                    <div  *ngIf="questionType == 'MULTIPLECHOICE'" class="flex flex-col justify-center items-center w-full">
+                        <div *ngIf="errorMsg != ''" >
+                            <h1 class="text-lg text-red-500">{{errorMsg}}</h1>
+                        </div>
+        
+                        <div #choicesDiv class="flex flex-col justify-center items-center w-full"> 
+                            
+                        </div>
+        
+                        <button (click)="addChoice()" type="button" class="p-4 outline rounded-lg m-5 text-center"> Add Choice </button>
+                    </div>
+        
+                    <div *ngIf="questionType == 'FREERESPONSE' " class="w-full">
+                        <div class="flex-grow my-5 flex flex-col items-center">
+                            <label for="question" class="text-2xl m-2 h-1/4">Answer: </label>
+                            <input class="w-2/3 h-1/2 text-center border-b-2 bg-transparent text-4xl" type="text" name="answer" [(ngModel)]="correctAnswer">
+                        </div>
+                    </div>
                 </div>
-
-                <button (click)="addChoice()" type="button"> Add Choice </button>
+    
+                <div *ngIf="questionType == 'TRUEFALSE' ">
+                    <div class="flex flex-row gap-3 justify-center items-center my-8">
+                        <button type="button" (click)="correctAnswer = 'true'" class="outline text-2xl px-14 py-6 rounded-xl mx-3 hover:px-20 hover:py-8 bg-green-400 " [style.color]="correctAnswer=='true'?'aqua' : 'black'"  >  True </button>
+                        <button type="button" (click)="correctAnswer = 'false'" class="outline text-2xl px-14 py-6 rounded-xl mx-3 hover:px-20 hover:py-8 bg-red-500" [style.color]="correctAnswer=='true'?'black' : 'aqua' "> False </button>
+                    </div>
+                </div>
             </div>
+        </div>
+            
+            
 
-            <div *ngIf="questionType == 'FREERESPONSE' ">
-                <div class="m-1 my-2">
-                    <label for="question">Question: </label>
-                    <input class="outline" type="text" name="question" [(ngModel)]="question">
-                </div>
-
-                <div>
-                    <label for="question">Answer: </label>
-                    <input class="outline" type="text" name="answer" [(ngModel)]="correctAnswer">
-                </div>
+        <!--Explanation + topics-->
+        <div class="w-full flex flex-col justify-center items-center gap-5">
+            <div id="explanation" class="w-full flex justify-center items-center">
+                <textarea class="outline text-md w-3/4 h-52" [style.resize]="'none'" pInputTextarea name="explanation" [(ngModel)]="explanation" placeholder="Description..."></textarea>       
             </div>
-
-            <div *ngIf="questionType == 'TRUEFALSE' ">
-                
-                <div class="m-1 my-2">
-                    <label for="question">Question: </label>
-                    <input class="outline" type="text" name="question" [(ngModel)]="question">
-                </div>
-                
-                <div>
-                    <button type="button" (click)="correctAnswer = 'true'" class="outline p-2 mx-3" [style.color]="correctAnswer=='true'?'blue' : 'black'" [style.background-color]="correctAnswer=='true'?'lightblue' : 'white' ">  True </button>
-                    <button type="button" (click)="correctAnswer = 'false'" class="outline p-2 mx-3" [style.color]="correctAnswer=='true'?'black' : 'blue' " [style.background-color]="correctAnswer=='true'?'white' : 'lightblue' "> False </button>
-                </div>
-            </div>
-
-            <div id="explanation" class="my-5">
-                <label for="explanation">Explanation: </label>
-                <input type="text" name="explanation" [(ngModel)]="explanation" class="outline p-4 w-3/4 h-52">         
-            </div>
-
+    
             <div id="topics">
                 <p-selectButton name="topics" [options]="roomInfo.topics" [(ngModel)]="selectedTopics" [multiple]="true" optionLabel="name" optionValue="id"></p-selectButton>
             </div>
         </div>
 
-        <button type="submit" (click)="addQuestion()" type="button"> Next </button>
+        <button type="submit" (click)="addQuestion()" type="button" class="mt-5 px-16 py-6 text-3xl outline bg-teal-400 rounded-xl"> Next </button>
+    </div>
+
+        
     </div>
 </div>
 

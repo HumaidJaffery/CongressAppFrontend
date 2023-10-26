@@ -59,8 +59,7 @@ export class RoomComponent implements OnInit {
   }
 
   goToGrade(grade:any ){
-    var serializedgradeInfo = encodeURIComponent( JSON.stringify(grade) );
-    this.router.navigate([`grade/${this.roomKey}`], {queryParams: {gradeInfo: serializedgradeInfo}});
+    this.router.navigate([`grade/${this.roomKey}`], {queryParams: {gradeInfoId: grade.id}});
   }
   
 
