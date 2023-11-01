@@ -1,14 +1,11 @@
-<div class="w-screen h-full outline flex">
-    
-
-
-    <div class="w-1/2 bg-gray-500">
+<div class="w-screen h-full outline flex bg-img">
+    <div class="w-full overlay">
         <div class="flex items-center justify-center h-full">
             <div *ngIf="errorMessage != '' " class="outline bg-red-500 h-12 w-3/4 m-auto text-center py-2"> 
                 {{errorMessage}}
             </div>
     
-            <form #form="ngForm" (ngSubmit)="onSubmit(form.value)" class=" bg-slate-600 mx-auto outline rounded-md p-8 m-4 text-center ">
+            <form #form="ngForm" (ngSubmit)="onSubmit(form.value)" class=" bg-teal-600 mx-auto outline rounded-md p-8 m-4 text-center ">
                 <div class="flex flex-col justify-center space-y-10">
                     <div>
                         <h1 class="text-4xl">Signup</h1>
@@ -48,10 +45,6 @@
     
             
         </div>
-    </div>
-
-    <div class="w-1/2 bg-gray-600">
-        <h1>placeholder</h1>
     </div>
 </div>
 

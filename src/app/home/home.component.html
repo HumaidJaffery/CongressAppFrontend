@@ -1,5 +1,5 @@
-<div class="w-full h-full flex justify-center items-center">
-    <div *ngIf="publicRooms.length == 0" class="w-full h-full text-center text-3xl flex justify-center items-center m-10">
+<div class="w-full h-full flex justify-center items-center pb-10">
+    <div *ngIf="publicRooms.length == 0" class="w-full h-full text-center text-3xl flex justify-center items-center">
         <h1>No Rooms Found</h1>
     </div>
 
@@ -9,25 +9,33 @@
 
     
 
-    <div class="h-full w-2/3" *ngIf="publicRooms.length > 0">
-        <div class="h-1/5 flex justify-center items-center">
-            <div class="my-10">
-                <button (click)="this.router.navigate(['create-room'])" class="bg-blue-600 hover:bg-blue-500 text-white font-bold text-3xl py-3 px-4 border-b-4 border-blue-800 hover:border-blue-500 rounded mx-2"> 
+    <div class="h-full w-2/3 flex flex-col" *ngIf="publicRooms.length > 0">
+        <div class="h-1/6 flex justify-center items-center">
+            <div class="">
+                <button (click)="this.router.navigate(['create-room'])" 
+                class="bg-blue-600 hover:bg-blue-500 text-white font-bold text-3xl py-3 px-4 border-b-4 border-blue-800 hover:border-blue-500 rounded mx-2"> 
                     Create Quiz
                 </button>
             </div>
             <div>
-                <button (click)="this.router.navigate(['join-room'])" class="text-4xl bg-transparent hover:bg-blue-500 text-blue-900 font-semibold hover:text-white py-3 px-4 border border-blue-900 hover:border-transparent rounded mx-2"> 
+                <button (click)="this.router.navigate(['join-room'])" 
+                class="text-4xl bg-transparent hover:bg-blue-500 text-blue-900 font-semibold hover:text-white py-3 px-4 border border-blue-900 hover:border-transparent rounded mx-2"> 
                     Join Quiz
                 </button>
             </div>
         </div>
 
-        <div class=" h-4/5 sm:gap-2 lg:gap-10 md:gap-7 grid lg:grid-rows-4 lg:grid-cols-3 md:grid-rows-6 md:grid-cols-2 sm:grid-rows-12 sm:grid-cols-1 ">
-            <div class="overflow-hidden max-h-96 row-span-1 col-span-1 outline text-left rounded-xl p-4 " *ngFor="let room of publicRooms" 
+        <div class=" h-5/6 sm:gap-2 lg:gap-10 md:gap-7 grid lg:grid-rows-4 lg:grid-cols-3 md:grid-rows-6 md:grid-cols-2 sm:grid-rows-12 sm:grid-cols-1 ">
+            <div class="overflow-hidden min-h-52 max-h-96 row-span-1 col-span-1 outline text-left rounded-xl p-4 " *ngFor="let room of publicRooms" 
             [style.background-color]="room.bgColor" [style.color]="room.textColor" 
             (click)="this.router.navigate(['room/' + room.key])">
-                <p class="text-xs break-all">Made By <b>{{room.owner.displayName}}</b></p>
+                <div class="flex w-full justify-center items-center">
+                    <p class="text-xs break-all w-11/12">Made By <b>{{room.owner.displayName}}</b></p>
+                    <div class="flex gap-1">
+                        <i class="pi pi-thumbs-up-fill"></i>
+                        <small>{{room.likes}}</small>
+                    </div>
+                </div>
                 <h1 class="text-3xl break-all">{{room.title}}</h1>
                 <h1 class="text-lg break-all" max>{{room.description}}</h1>
                 <p> </p>
